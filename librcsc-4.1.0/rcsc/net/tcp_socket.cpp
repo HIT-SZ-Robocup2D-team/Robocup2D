@@ -41,7 +41,7 @@ namespace rcsc {
 /*!
 
 */
-TCPSocket::TCPSocket( const char * hostname,
+TCPSocket::TCPSocket( const char * hostname,                            //构造函数
                       const int port )
     : BasicSocket()
 {
