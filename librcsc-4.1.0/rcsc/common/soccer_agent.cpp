@@ -69,9 +69,15 @@ SoccerAgent::~SoccerAgent()
 
 */
 bool
+<<<<<<< HEAD
 SoccerAgent::init( BasicClient * client,                                //初始化函数
                    const int argc,
                    const char * const * argv )                          //const的指向const char的指针
+=======
+SoccerAgent::init( BasicClient * client,
+                   const int argc,
+                   const char * const * argv )
+>>>>>>> master
 {
    /*
       Do NOT remove the following copyright notice!

@@ -102,7 +102,11 @@ SamplePlayer::SamplePlayer()
     M_worldmodel.setAudioMemory( audio_memory );
 
     //
+<<<<<<< HEAD
     // set communication message parser设置信息的语法分析
+=======
+    // set communication message parser
+>>>>>>> master
     //
     addSayMessageParser( SayMessageParser::Ptr( new BallMessageParser( audio_memory ) ) );
     addSayMessageParser( SayMessageParser::Ptr( new PassMessageParser( audio_memory ) ) );

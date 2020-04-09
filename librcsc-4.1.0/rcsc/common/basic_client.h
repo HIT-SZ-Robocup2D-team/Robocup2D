@@ -32,16 +32,27 @@
 #ifndef RCSC_BASIC_CLIENT_H
 #define RCSC_BASIC_CLIENT_H
 
+<<<<<<< HEAD
 #include <boost/shared_ptr.hpp>   //用来提供boost库中的智能指针shared_ptr,该指针只能用于堆中的对象，这个指针可以自动释放，不需要delete；模板shared_ptr<T> ptr(new T);  // T 可以是 int、char、类等各种类型
 
 #include <fstream>                //文件流头文件，用于C++的文件操作
+=======
+#include <boost/shared_ptr.hpp>
+
+#include <fstream>
+>>>>>>> master
 #include <string>
 
 namespace rcsc {
 
 class UDPSocket;
+<<<<<<< HEAD
 class GZCompressor;                //string包含的类
 class GZDecompressor;             //string包含的类
+=======
+class GZCompressor;
+class GZDecompressor;
+>>>>>>> master
 class CmdLineParser;
 class SoccerAgent;
 
@@ -55,7 +66,11 @@ class SoccerAgent;
  */
 class BasicClient {
 public:
+<<<<<<< HEAD
     enum {                                                          //为什么要用枚举型呢？？？
+=======
+    enum {
+>>>>>>> master
         MAX_MESG = 8192, //!< max length of send/receive buffer.   //最大接受字节长度
     };
 
@@ -71,13 +86,21 @@ public:
 private:
 
     //! client mode
+<<<<<<< HEAD
     Mode M_client_mode;                          
+=======
+    Mode M_client_mode;
+>>>>>>> master
 
     //! udp connection
     boost::shared_ptr< UDPSocket > M_socket;
 
     //! offline client input log file
+<<<<<<< HEAD
     std::ifstream M_offline_in;               //文件操作
+=======
+    std::ifstream M_offline_in;
+>>>>>>> master
 
     //! offline client input log file
     std::ofstream M_offline_out;
@@ -107,27 +130,44 @@ private:
     std::string M_decompression_message;
 
     // nocopyable
+<<<<<<< HEAD
     BasicClient( const BasicClient & );               //声明一个也构造函数，参数是BasicClient的引用
     BasicClient & operator=( const BasicClient & );  //operator =是一个重载运算符，相当于重新定义一个=，使用引用节省时间空间
+=======
+    BasicClient( const BasicClient & );
+    BasicClient & operator=( const BasicClient & );
+>>>>>>> master
 
 public:
 
     /*!
       \brief init member variables
      */
+<<<<<<< HEAD
     BasicClient();                                   //构造函数
+=======
+    BasicClient();
+>>>>>>> master
 
     /*!
       \brief virtual destructor.
      */
+<<<<<<< HEAD
     virtual                                          //析构函数，在结束时执行
+=======
+    virtual
+>>>>>>> master
     ~BasicClient();
 
     /*!
       \brief get the current client mode.
       \return current client mode.
      */
+<<<<<<< HEAD
     Mode clientMode() const                         //定义一个ClientMode返回当前状态
+=======
+    Mode clientMode() const
+>>>>>>> master
       {
           return M_client_mode;
       }
@@ -136,7 +176,11 @@ public:
       \brief set client mode.
       \param mode new mode
      */
+<<<<<<< HEAD
     void setClientMode( const Mode mode )          //用来改变mode
+=======
+    void setClientMode( const Mode mode )
+>>>>>>> master
       {
           M_client_mode = mode;
       }

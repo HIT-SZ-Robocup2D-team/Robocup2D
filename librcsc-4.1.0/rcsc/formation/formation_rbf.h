@@ -55,7 +55,11 @@ public:
       \brief formation parameter using RBF network.
       one Param instance realizes just one player's position.
     */
+<<<<<<< HEAD
     class Param {                                                       //参数类
+=======
+    class Param {
+>>>>>>> master
     public:
         static const double PITCH_LENGTH; //!< field length
         static const double PITCH_WIDTH; //!< field width

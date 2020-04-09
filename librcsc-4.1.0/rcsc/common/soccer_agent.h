@@ -49,11 +49,19 @@ class CmdLineParser;
  */
 class SoccerAgent {
 public:
+<<<<<<< HEAD
     friend class BasicClient;  //定义一个友元Basiclient
 
 protected:
     //! interface to the rcssserver
     BasicClient * M_client;   //指向Basiclent的指针
+=======
+    friend class BasicClient;
+
+protected:
+    //! interface to the rcssserver
+    BasicClient * M_client;
+>>>>>>> master
 
 private:
 
