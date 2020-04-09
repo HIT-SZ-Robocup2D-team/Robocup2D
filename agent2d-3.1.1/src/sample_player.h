@@ -35,7 +35,7 @@
 #include <vector>
 
 class SamplePlayer
-    : public rcsc::PlayerAgent {
+    : public rcsc::PlayerAgent {                    //定义一个SamplePlayer的类，这个类继承于rcsc这个namespace中的playerAgent这个类
 private:
 
     Communication::Ptr M_communication;
@@ -57,30 +57,30 @@ protected:
       But you must call PlayerAgent::initImpl() in this method.
     */
     virtual
-    bool initImpl( rcsc::CmdLineParser & cmd_parser );
+    bool initImpl( rcsc::CmdLineParser & cmd_parser );                  //初始化接口
 
     //! main decision
     virtual
-    void actionImpl();
+    void actionImpl();                                                  //动作接口
 
     //! communication decision
     virtual
-    void communicationImpl();
+    void communicationImpl();                                           //交流接口
 
     virtual
-    void handleActionStart();
+    void handleActionStart();                                           //处理动作的开始函数
     virtual
-    void handleActionEnd();
+    void handleActionEnd();                                             //结束函数
 
     virtual
-    void handleServerParam();
+    void handleServerParam();                                           //处理服务器参数
     virtual
     void handlePlayerParam();
     virtual
     void handlePlayerType();
 
     virtual
-    FieldEvaluator::ConstPtr createFieldEvaluator() const;
+    FieldEvaluator::ConstPtr createFieldEvaluator() const;              //评估球场函数，加const隐含传入的指针不能被修改
 
     virtual
     ActionGenerator::ConstPtr createActionGenerator() const;

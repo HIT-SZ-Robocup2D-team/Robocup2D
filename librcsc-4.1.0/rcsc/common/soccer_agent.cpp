@@ -69,9 +69,9 @@ SoccerAgent::~SoccerAgent()
 
 */
 bool
-SoccerAgent::init( BasicClient * client,
+SoccerAgent::init( BasicClient * client,                                //初始化函数
                    const int argc,
-                   const char * const * argv )
+                   const char * const * argv )                          //const的指向const char的指针
 {
    /*
       Do NOT remove the following copyright notice!
