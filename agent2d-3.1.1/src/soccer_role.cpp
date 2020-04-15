@@ -94,7 +94,7 @@ SoccerRole::create( const std::string & name )
 
 */
 bool
-SoccerRole::acceptExecution( const rcsc::WorldModel & wm )
+SoccerRole::acceptExecution( const rcsc::WorldModel & wm )              //从worldmodel接受是否开始执行
 {
     if ( wm.gameMode().type() == rcsc::GameMode::PlayOn )
     {

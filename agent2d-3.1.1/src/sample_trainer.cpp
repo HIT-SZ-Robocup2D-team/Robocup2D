@@ -67,7 +67,7 @@ SampleTrainer::~SampleTrainer()
 
  */
 bool
-SampleTrainer::initImpl( CmdLineParser & cmd_parser )
+SampleTrainer::initImpl( CmdLineParser & cmd_parser )                   //初始化
 {
     bool result = TrainerAgent::initImpl( cmd_parser );
 
@@ -130,7 +130,7 @@ SampleTrainer::actionImpl()
 void
 SampleTrainer::sampleAction()
 {
-    // sample training to test a ball interception.
+    // sample training to test a ball interception.一个截球的训练示例
 
     static int s_state = 0;
     static int s_wait_counter = 0;
@@ -149,7 +149,7 @@ SampleTrainer::sampleAction()
     case 1:
         // exist kickable left player
 
-        // recover stamina
+        // recover stamina                                              //恢复体力
         doRecover();
         // move ball to center
         doMoveBall( Vector2D( 0.0, 0.0 ),
@@ -219,7 +219,7 @@ SampleTrainer::recoverForever()
     }
 
     if ( world().time().stopped() == 0
-         && world().time().cycle() % 50 == 0 )
+         && world().time().cycle() % 50 == 0 )                          //时间停止或周期结束
     {
         // recover stamina
         doRecover();

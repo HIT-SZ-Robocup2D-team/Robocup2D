@@ -30,9 +30,9 @@
 
 #include "role_goalie.h"
 
-#include "bhv_goalie_basic_move.h"
-#include "bhv_goalie_chase_ball.h"
-#include "bhv_goalie_free_kick.h"
+#include "bhv__chase_ball.h"
+#include "bhv_goalie_goalie_basic_move.h"
+#include "bhv_goaliefree_kick.h"
 
 #include <rcsc/action/basic_actions.h>
 #include <rcsc/action/neck_scan_field.h>
@@ -117,11 +117,11 @@ RoleGoalie::doKick( PlayerAgent * agent )
 void
 RoleGoalie::doMove( PlayerAgent * agent )
 {
-    if ( Bhv_GoalieChaseBall::is_ball_chase_situation( agent ) )
+    if ( Bhv_GoalieChaseBall::is_ball_chase_situation( agent ) )        //能冲到球旁边就冲
     {
         Bhv_GoalieChaseBall().execute( agent );
     }
-    else
+    else                                                                //不然就BasicMove
     {
         Bhv_GoalieBasicMove().execute( agent );
     }

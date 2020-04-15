@@ -336,7 +336,7 @@ SamplePlayer::handleActionEnd()
 #if 0
         const ServerParam & SP = ServerParam::i();
         //
-        // inside of pitch
+        // inside of pitch                                              //设置debugclient，进攻防守各一个，
         //
 
         // top,lower
@@ -445,7 +445,7 @@ SamplePlayer::handleActionEnd()
 
  */
 void
-SamplePlayer::handleServerParam()
+SamplePlayer::handleServerParam()                                       //处理服务器参数
 {
     if ( KickTable::instance().createTables() )
     {

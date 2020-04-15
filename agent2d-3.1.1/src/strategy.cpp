@@ -73,7 +73,7 @@
 
 using namespace rcsc;
 
-const std::string Strategy::BEFORE_KICK_OFF_CONF = "before-kick-off.conf";
+const std::string Strategy::BEFORE_KICK_OFF_CONF = "before-kick-off.conf";   //定义为小写的字符串
 const std::string Strategy::NORMAL_FORMATION_CONF = "normal-formation.conf";
 const std::string Strategy::DEFENSE_FORMATION_CONF = "defense-formation.conf";
 const std::string Strategy::OFFENSE_FORMATION_CONF = "offense-formation.conf";
@@ -104,7 +104,7 @@ Strategy::Strategy()
     // roles
     //
 
-    M_role_factory[RoleSample::name()] = &RoleSample::create;
+    M_role_factory[RoleSample::name()] = &RoleSample::create;           //指向不同的role的执行文件的指针
 
     M_role_factory[RoleGoalie::name()] = &RoleGoalie::create;
     M_role_factory[RoleCenterBack::name()] = &RoleCenterBack::create;
@@ -115,16 +115,16 @@ Strategy::Strategy()
     M_role_factory[RoleSideForward::name()] = &RoleSideForward::create;
     M_role_factory[RoleCenterForward::name()] = &RoleCenterForward::create;
 
-    // keepaway
-    M_role_factory[RoleKeepawayKeeper::name()] = &RoleKeepawayKeeper::create;
+    // keepaway防守，类似于逼抢，可以用强化学习来训练
+    M_role_factory[RoleKeepawayKeeper::name()] = &RoleKeepawayKeeper::create;  
     M_role_factory[RoleKeepawayTaker::name()] = &RoleKeepawayTaker::create;
 
     //
     // formations
     //
 
-    M_formation_factory[FormationStatic::name()] = &FormationStatic::create;
-    M_formation_factory[FormationDT::name()] = &FormationDT::create;
+    M_formation_factory[FormationStatic::name()] = &FormationStatic::create; //指向formation的指针
+    M_formation_factory[DT::name()] = &FormationDT::create;
 #endif
 
     for ( size_t i = 0; i < M_role_number.size(); ++i )
@@ -149,7 +149,7 @@ Strategy::instance()
 
  */
 bool
-Strategy::init( CmdLineParser & cmd_parser )
+Strategy::init( CmdLineParser & cmd_parser )                            //初始化cmd_parser用于对指令进行处理
 {
     ParamMap param_map( "HELIOS_base options" );
 
@@ -200,8 +200,8 @@ Strategy::read( const std::string & formation_dir )
     }
 
     // before kick off
-    M_before_kick_off_formation = readFormation( configpath + BEFORE_KICK_OFF_CONF );
-    if ( ! M_before_kick_off_formation )
+    M_before_kick_off_formation = readFormation( configpath + BEFORE_KICK_OFF_CONF );//使用readFormation函数来读取阵型
+    if ( ! M_before_kick_off_formation )                                             //没读到就输出错误
     {
         std::cerr << "Failed to read before_kick_off formation" << std::endl;
         return false;
@@ -298,12 +298,12 @@ Strategy::read( const std::string & formation_dir )
 
  */
 Formation::Ptr
-Strategy::readFormation( const std::string & filepath )
+Strategy::readFormation( const std::string & filepath )                 //通过文件路径来读取阵型文件
 {
-    Formation::Ptr f;
+    Formation::Ptr f;                                                   //阵型指针
 
-    std::ifstream fin( filepath.c_str() );
-    if ( ! fin.is_open() )
+    std::ifstream fin( filepath.c_str() );                              //文件操作
+    if ( ! fin.is_open() )                                              //检查是否成功打开
     {
         std::cerr << __FILE__ << ':' << __LINE__ << ':'
                   << " ***ERROR*** failed to open file [" << filepath << "]"
@@ -397,7 +397,7 @@ Strategy::readFormation( const std::string & filepath )
 
  */
 Formation::Ptr
-Strategy::createFormation( const std::string & type_name ) const
+Strategy::createFormation( const std::string & type_name ) const        //创建阵型
 {
     Formation::Ptr f;
 
@@ -432,7 +432,7 @@ Strategy::createFormation( const std::string & type_name ) const
 
  */
 void
-Strategy::update( const WorldModel & wm )
+Strategy::update( const WorldModel & wm )                               //用于和world_model中的时间保持同步，更新情况
 {
     static GameTime s_update_time( -1, 0 );
 
@@ -451,7 +451,7 @@ Strategy::update( const WorldModel & wm )
 
  */
 void
-Strategy::exchangeRole( const int unum0,
+Strategy::exchangeRole( const int unum0,                                //交换两名队员的role
                         const int unum1 )
 {
     if ( unum0 < 1 || 11 < unum0
@@ -483,7 +483,7 @@ Strategy::exchangeRole( const int unum0,
     int role1 = M_role_number[unum1 - 1];
 
     dlog.addText( Logger::TEAM,
-                  __FILE__":(exchangeRole) unum=%d(role=%d) <-> unum=%d(role=%d)",
+                  __FILE__":(exchangeRole) unum=%d(role=%d) <-> unum=%d(role=%d)", //更新记录日志
                   unum0, role0,
                   unum1, role1 );
 
@@ -496,7 +496,7 @@ Strategy::exchangeRole( const int unum0,
 
 */
 bool
-Strategy::isMarkerType( const int unum ) const
+Strategy::isMarkerType( const int unum ) const                          //暂时不知道干嘛用的，应该是用来获取当前状态的函数
 {
     int number = roleNumber( unum );
 
@@ -539,7 +539,7 @@ Strategy::createRole( const int unum,
         return role;
     }
 
-    const std::string role_name = f->getRoleName( number );
+    const std::string role_name = f->getRoleName( number );             //根据world_model中的阵型来给某个球员创造role
 
 #ifdef USE_GENERIC_FACTORY
     role = SoccerRole::create( role_name );
@@ -572,13 +572,13 @@ Strategy::updateSituation( const WorldModel & wm )
 
     if ( wm.gameMode().type() != GameMode::PlayOn )
     {
-        if ( wm.gameMode().isPenaltyKickMode() )
+        if ( wm.gameMode().isPenaltyKickMode() )                        //点球状态
         {
             dlog.addText( Logger::TEAM,
                           __FILE__": Situation PenaltyKick" );
             M_current_situation = PenaltyKick_Situation;
         }
-        else if ( wm.gameMode().isPenaltyKickMode() )
+        else if ( wm.gameMode().isPenaltyKickMode() )                   /**这里可能有bug*/
         {
             dlog.addText( Logger::TEAM,
                           __FILE__": Situation OurSetPlay" );
@@ -623,7 +623,7 @@ Strategy::updateSituation( const WorldModel & wm )
 
  */
 void
-Strategy::updatePosition( const WorldModel & wm )
+Strategy::updatePosition( const WorldModel & wm )                       //更新位置，包括球和球员
 {
     static GameTime s_update_time( 0, 0 );
     if ( s_update_time == wm.time() )

@@ -65,7 +65,7 @@ bool
 RoleSample::execute( PlayerAgent * agent )
 {
     bool kickable = agent->world().self().isKickable();
-    if ( agent->world().existKickableTeammate()
+    if ( agent->world().existKickableTeammate()                         //非常简单的判断，就是球在就踢，不在就跑
          && agent->world().teammatesFromBall().front()->distFromBall()
          < agent->world().ball().distFromSelf() )
     {
@@ -91,7 +91,8 @@ RoleSample::execute( PlayerAgent * agent )
 void
 RoleSample::doKick( PlayerAgent * agent )
 {
-    switch ( Strategy::get_ball_area( agent->world().ball().pos() ) ) {
+    switch ( Strategy::get_ball_area( agent->world().ball().pos() ) ) { /**留下来给后面的role_xxxx文件继承后填充*/
+    switch ( Strategy::get_ball_area( agent->world().ball().pos() ) ) { /**留下来给后面的role_xxxx文件继承后填充*/
     case Strategy::BA_CrossBlock:
     case Strategy::BA_Stopper:
     case Strategy::BA_Danger:
@@ -112,9 +113,9 @@ RoleSample::doKick( PlayerAgent * agent )
 
 */
 void
-RoleSample::doMove( PlayerAgent * agent )
+RoleSample::doMove( PlayerAgent * agent )                              
 {
-    switch ( Strategy::get_ball_area( agent->world() ) ) {
+    switch ( Strategy::get_ball_area( agent->world() ) ) {              /**留下来给后面的role_xxxx文件继承后填充*/
     case Strategy::BA_CrossBlock:
     case Strategy::BA_Stopper:
     case Strategy::BA_Danger:

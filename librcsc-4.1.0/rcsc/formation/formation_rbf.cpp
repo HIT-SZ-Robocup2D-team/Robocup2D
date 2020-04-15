@@ -541,7 +541,7 @@ FormationRBF::getPositions( const Vector2D & focus_point,
 
  */
 void
-FormationRBF::train()
+FormationRBF::train()                                                   //训练函数
 {
 <<<<<<< HEAD
     if ( ! M_samples                                                    //M_samples为空或调用函数为空（M_samples来自<formation.h>的指向sampleDataSet的指针）

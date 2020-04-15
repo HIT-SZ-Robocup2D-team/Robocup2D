@@ -44,18 +44,18 @@
 
 // # define USE_GENERIC_FACTORY 1
 
-namespace rcsc {
+namespace rcsc {                                                        //两个基本类
 class CmdLineParser;
 class WorldModel;
 }
 
-enum PositionType {
+enum PositionType {                                                     //三种position
     Position_Left = -1,
     Position_Center = 0,
     Position_Right = 1,
 };
 
-enum SituationType {
+enum SituationType {                                                    //几种球员状态Situation
     Normal_Situation,
     Offense_Situation,
     Defense_Situation,
@@ -67,7 +67,7 @@ enum SituationType {
 
 class Strategy {
 public:
-    static const std::string BEFORE_KICK_OFF_CONF;
+    static const std::string BEFORE_KICK_OFF_CONF;                      //定义几个字符串代表配置参数
     static const std::string NORMAL_FORMATION_CONF;
     static const std::string DEFENSE_FORMATION_CONF;
     static const std::string OFFENSE_FORMATION_CONF;
@@ -82,7 +82,7 @@ public:
     static const std::string INDIRECT_FREEKICK_OUR_FORMATION_CONF;
 
     enum BallArea {
-        BA_CrossBlock, BA_DribbleBlock, BA_DribbleAttack, BA_Cross,
+        BA_CrossBlock, BA_DribbleBlock, BA_DribbleAttack, BA_Cross,     //dribble带球盘球
         BA_Stopper,    BA_DefMidField,  BA_OffMidField,   BA_ShootChance,
         BA_Danger,
 
@@ -106,7 +106,7 @@ private:
     // formations
     //
 
-    rcsc::Formation::Ptr M_before_kick_off_formation;
+    rcsc::Formation::Ptr M_before_kick_off_formation;                   //针对不同情况的阵型指针
 
     rcsc::Formation::Ptr M_normal_formation;
     rcsc::Formation::Ptr M_defense_formation;

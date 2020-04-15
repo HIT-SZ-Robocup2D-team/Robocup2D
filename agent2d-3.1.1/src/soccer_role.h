@@ -48,7 +48,7 @@ class SoccerRole {
 public:
 
     typedef boost::shared_ptr< SoccerRole > Ptr;
-    typedef Ptr (*Creator)();
+    typedef Ptr (*Creator)();                                           //定义函数指针
     typedef rcss::Factory< Creator, std::string > Creators;
 
     static
