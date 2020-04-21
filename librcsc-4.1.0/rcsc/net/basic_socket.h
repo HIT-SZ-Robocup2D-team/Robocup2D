@@ -33,13 +33,9 @@
 #define RCSC_NET_BASIC_SOCKET_H
 
 #include <boost/scoped_ptr.hpp>
-<<<<<<< HEAD
 #include <cstddef>                                      //cstdef是宏定义库，包括
                                                         //typedef unsigned int std::size_t; --用来表示sizeof操作符的结果类型；
                                                         //typedef int std::ptrdiff_t; --用来表示随机访问迭代器相减的结果类型
-=======
-#include <cstddef>
->>>>>>> master
 
 namespace rcsc {
 
