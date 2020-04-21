@@ -9,7 +9,7 @@ echo " All rights reserved."
 echo "******************************************************************"
 
 
-LIBPATH=/path/to/prefix/lib   #配置环境变量,基本照抄就行
+LIBPATH=/usr/local/lib
 if [ x"$LIBPATH" != x ]; then
   if [ x"$LD_LIBRARY_PATH" = x ]; then
     LD_LIBRARY_PATH=$LIBPATH
@@ -21,7 +21,7 @@ fi
 
 DIR=`dirname $0`
 
-player="${DIR}/sample_player"    #指定各个变量，其中服务器的端口是确定的，其他的可以自行修改
+player="${DIR}/sample_player"
 coach="${DIR}/sample_coach"
 teamname="HELIOS_base"
 host="localhost"
@@ -30,7 +30,7 @@ coach_port=""
 debug_server_host=""
 debug_server_port=""
 
-player_conf="${DIR}/player.conf"    #${DIR}表示当前目录的完整路径且执行后不会改变当前的位置
+player_conf="${DIR}/player.conf"
 config_dir="${DIR}/formations-dt"
 
 coach_conf="${DIR}/coach.conf"
