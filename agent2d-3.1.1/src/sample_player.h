@@ -60,47 +60,47 @@ protected:
     */
     virtual
 
-    bool initImpl( rcsc::CmdLineParser & cmd_parser );                  //初始化接口
+    bool initImpl( rcsc::CmdLineParser & cmd_parser );                  //初始化接口，调用父类的initImpl，加入判断
 
     //! main decision
     virtual
-    void actionImpl();                                                  //动作接口
+    void actionImpl();                                                  //动作决策，相当于球员的大脑，关键
 
     //! communication decision
     virtual
-    void communicationImpl();                                           //交流接口
+    void communicationImpl();                                           //判断M_communication是否为空，不为空就调用这个Communication类的对象的执行函数
 
     virtual
-    void handleActionStart();                                           //处理动作的开始函数
+    void handleActionStart();                                           //处理动作的开始函数，还没写
     virtual
-    void handleActionEnd();                                             //结束函数
+    void handleActionEnd();                                             //结束函数，给debugclient和log添加记录
 
     virtual
     void handleServerParam();                                           //处理服务器参数
 
     virtual
-    void handlePlayerParam();
+    void handlePlayerParam();                                           //处理player的参数，还没有写
     virtual
-    void handlePlayerType();
-
-    virtual
-
-    FieldEvaluator::ConstPtr createFieldEvaluator() const;              //评估球场函数，加const隐含传入的指针不能被修改
-
+    void handlePlayerType();                                            //还没有写
 
     virtual
-    ActionGenerator::ConstPtr createActionGenerator() const;
+
+    FieldEvaluator::ConstPtr createFieldEvaluator() const;              //创造sampleEaluator并返回这个指针
+
+
+    virtual
+    ActionGenerator::ConstPtr createActionGenerator() const;            //创造一个CompositeActionGenerator，添加参数，然后返回这个指针
 
 private:
 
-    bool doPreprocess();
-    bool doShoot();
-    bool doForceKick();
-    bool doHeardPassReceive();
+    bool doPreprocess();                                                //判断一系列过程是否成功执行（包括但不限于下面的几个过程）
+    bool doShoot();                                                     //判断是否可执行shoot，同时执行shoot是否成功，成功后就添加log
+    bool doForceKick();                                                 //判断是否可执行，可执行就往下添加log，并执行一系列操作
+    bool doHeardPassReceive();                                          //判断是否可行，可行就添加log，并执行一系列操作
 
 public:
     virtual
-    FieldEvaluator::ConstPtr getFieldEvaluator() const;
+    FieldEvaluator::ConstPtr getFieldEvaluator() const;                 //直接返回M_FieldEvaluator,给别类调用用的
 };
 
 #endif

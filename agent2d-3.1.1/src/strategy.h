@@ -94,8 +94,8 @@ private:
     // factories
     //
 #ifndef USE_GENERIC_FACTORY
-    typedef std::map< std::string, SoccerRole::Creator > RoleFactory;
-    typedef std::map< std::string, rcsc::Formation::Creator > FormationFactory;
+    typedef std::map< std::string, SoccerRole::Creator > RoleFactory;   //Hash表将RoleName和Creator指针联系在一起
+    typedef std::map< std::string, rcsc::Formation::Creator > FormationFactory;  //同上将FormationName和Creator指针联系在一起
 
     RoleFactory M_role_factory;
     FormationFactory M_formation_factory;
@@ -145,72 +145,72 @@ private:
 public:
 
     static
-    Strategy & instance();
+    Strategy & instance();                                              //访问Strategy然后返回指针
 
     static
     const
-    Strategy & i()
+    Strategy & i()                                                      //功能和上面一样但是返回的指针不能修改
       {
-          return instance();
+          return instance();                              
       }
 
     //
     // initialization
     //
 
-    bool init( rcsc::CmdLineParser & cmd_parser );
-    bool read( const std::string & config_dir );
+    bool init( rcsc::CmdLineParser & cmd_parser );                      //创建param_map并判断是否传回help，若没有就调用param_map的init函数，若返回ture就返回true
+    bool read( const std::string & config_dir );                        //读取阵型文件的配置文件
 
 
     //
     // update
     //
 
-    void update( const rcsc::WorldModel & wm );
+    void update( const rcsc::WorldModel & wm );                         //从传入的world_model中更新时间位置等数据
 
 
-    void exchangeRole( const int unum0,
+    void exchangeRole( const int unum0,                                 //将两个球员的role进行调换
                        const int unum1 );
 
     //
     // accessor to the current information
     //
 
-    int goalieUnum() const { return M_goalie_unum; }
+    int goalieUnum() const { return M_goalie_unum; }                    //返回goalieUnum
 
-    int roleNumber( const int unum ) const
+    int roleNumber( const int unum ) const                              //根据球员num返回role
       {
           if ( unum < 1 || 11 < unum ) return unum;
           return M_role_number[unum - 1];
       }
 
-    bool isMarkerType( const int unum ) const;
+    bool isMarkerType( const int unum ) const;                          //判断rolenum是否为2、3、4、5
 
 
-    SoccerRole::Ptr createRole( const int unum,
+    SoccerRole::Ptr createRole( const int unum,                         //给传入一个球员的num，为这个球员创造role
                                 const rcsc::WorldModel & wm ) const;
-    PositionType getPositionType( const int unum ) const;
-    rcsc::Vector2D getPosition( const int unum ) const;
+    PositionType getPositionType( const int unum ) const;               //根据球员号码判断他是在side还是center
+    rcsc::Vector2D getPosition( const int unum ) const;                 //根据球员号码获取球员位置
 
 
 private:
-    void updateSituation( const rcsc::WorldModel & wm );
+    void updateSituation( const rcsc::WorldModel & wm );                //根据worldoMdel更新time和gamemode
     // update the current position table
-    void updatePosition( const rcsc::WorldModel & wm );
+    void updatePosition( const rcsc::WorldModel & wm );                 //根据worldmodel更新位置，包括球和球员
 
-    rcsc::Formation::Ptr readFormation( const std::string & filepath );
-    rcsc::Formation::Ptr createFormation( const std::string & type_name ) const;
+    rcsc::Formation::Ptr readFormation( const std::string & filepath ); //通过文件路径来读取阵型文件
+    rcsc::Formation::Ptr createFormation( const std::string & type_name ) const;  //根据传入的FormationTypeName创造formation指针，并赋值，返回该指针
 
-    rcsc::Formation::Ptr getFormation( const rcsc::WorldModel & wm ) const;
+    rcsc::Formation::Ptr getFormation( const rcsc::WorldModel & wm ) const;  //根据当前的gamemode，返回对应的formation指针
 
 public:
     static
-    BallArea get_ball_area( const rcsc::WorldModel & wm );
+    BallArea get_ball_area( const rcsc::WorldModel & wm );              //获取球的位置区域
     static
-    BallArea get_ball_area( const rcsc::Vector2D & ball_pos );
+    BallArea get_ball_area( const rcsc::Vector2D & ball_pos );          //在log中添加球的位置数据，和上面的函数连续使用
 
     static
-    double get_normal_dash_power( const rcsc::WorldModel & wm );
+    double get_normal_dash_power( const rcsc::WorldModel & wm );        //返回体力剩余
 };
 
 #endif
