@@ -123,8 +123,8 @@ Strategy::Strategy()
     // formations
     //
 
-    M_formation_factory[FormationStatic::name()] = &FormationStatic::create; //指向formation的指针
-    M_formation_factory[DT::name()] = &FormationDT::create;
+    M_formation_factory[FormationStatic::name()] = &FormationStatic::create; //指向formation的指针，name（）返回当前的formation type名称，这里不是数组，而是Hash，相当于找到一个string为FormationStatic::name()的位置，赋值为&FormationStatic::create，两个就联结起来了
+    M_formation_factory[DT::name()] = &FormationDT::create;                  //同上
 #endif
 
     for ( size_t i = 0; i < M_role_number.size(); ++i )
@@ -208,7 +208,7 @@ Strategy::read( const std::string & formation_dir )
     }
 
     ///////////////////////////////////////////////////////////
-    M_normal_formation = readFormation( configpath + NORMAL_FORMATION_CONF );
+    M_normal_formation = readFormation( configpath + NORMAL_FORMATION_CONF ); //同上读取其他formation
     if ( ! M_normal_formation )
     {
         std::cerr << "Failed to read normal formation" << std::endl;
@@ -404,8 +404,8 @@ Strategy::createFormation( const std::string & type_name ) const        //创建
 #ifdef USE_GENERIC_FACTORY
     f = Formation::create( type_name );
 #else
-    FormationFactory::const_iterator creator = M_formation_factory.find( type_name );
-    if ( creator == M_formation_factory.end() )
+    FormationFactory::const_iterator creator = M_formation_factory.find( type_name );  //HAsh中寻找string为typename的节点，然后返回对应的formation::creator的指针，const_iterator为迭代器，可访问但不可修改
+    if ( creator == M_formation_factory.end() )                                        //如果creator是hash的尾迭代器
     {
         std::cerr << __FILE__ << ": " << __LINE__
                   << " ***ERROR*** unsupported formation type ["
@@ -566,7 +566,7 @@ Strategy::createRole( const int unum,
 
  */
 void
-Strategy::updateSituation( const WorldModel & wm )
+Strategy::updateSituation( const WorldModel & wm )                      //更新playmode和time
 {
     M_current_situation = Normal_Situation;
 
@@ -953,7 +953,7 @@ Strategy::getFormation( const WorldModel & wm ) const
 
  */
 Strategy::BallArea
-Strategy::get_ball_area( const WorldModel & wm )
+Strategy::get_ball_area( const WorldModel & wm )                        
 {
     int ball_step = 1000;
     ball_step = std::min( ball_step, wm.interceptTable()->teammateReachCycle() );
@@ -968,7 +968,7 @@ Strategy::get_ball_area( const WorldModel & wm )
 
  */
 Strategy::BallArea
-Strategy::get_ball_area( const Vector2D & ball_pos )
+Strategy::get_ball_area( const Vector2D & ball_pos )                    //添加log
 {
     dlog.addLine( Logger::TEAM,
                   52.5, -17.0, -52.5, -17.0,

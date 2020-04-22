@@ -63,7 +63,7 @@
 #include <rcsc/action/view_synch.h>
 
 #include <rcsc/formation/formation.h>
-#include <rcsc/action/kick_table.h>
+#include <rcsc/action/kick_table.h>                                     //用来判断是否球是否可踢
 #include <rcsc/player/intercept_table.h>
 #include <rcsc/player/say_message_builder.h>
 #include <rcsc/player/audio_sensor.h>
@@ -172,7 +172,7 @@ SamplePlayer::initImpl( CmdLineParser & cmd_parser )
     bool result = PlayerAgent::initImpl( cmd_parser );
 
     // read additional options
-    result &= Strategy::instance().init( cmd_parser );
+    result &= Strategy::instance().init( cmd_parser );                  //调用instance访问一个strategy对象，然后再调用类方法init，并将结果（true/result）返回给result（单例的使用）
 
     rcsc::ParamMap my_params( "Additional options" );
 #if 0
@@ -201,7 +201,7 @@ SamplePlayer::initImpl( CmdLineParser & cmd_parser )
         return false;
     }
 
-    if ( ! Strategy::instance().read( config().configDir() ) )
+    if ( ! Strategy::instance().read( config().configDir() ) )          //如果读取不到配置文件
     {
         std::cerr << "***ERROR*** Failed to read team strategy." << std::endl;
         return false;
@@ -228,7 +228,7 @@ SamplePlayer::actionImpl()
     //
     // update strategy and analyzer
     //
-    Strategy::instance().update( world() );
+    Strategy::instance().update( world() );                             //先根据世界模型更新strategy
     FieldAnalyzer::instance().update( world() );
 
     //
@@ -261,7 +261,7 @@ SamplePlayer::actionImpl()
     //
     SoccerRole::Ptr role_ptr;
     {
-        role_ptr = Strategy::i().createRole( world().self().unum(), world() );
+        role_ptr = Strategy::i().createRole( world().self().unum(), world() );  //不知道i函数是为什么，好像有点多此一举
 
         if ( ! role_ptr )
         {
@@ -332,9 +332,9 @@ SamplePlayer::handleActionEnd()
     if ( world().self().posValid() )
     {
 #if 0
-        const ServerParam & SP = ServerParam::i();
+        const ServerParam & SP = ServerParam::i();                      //因为是静态类，所以调用一个独有的函数访问
         //
-        // inside of pitch                                              //设置debugclient，进攻防守各一个，
+        // inside of pitch                                              //设置一些debug用的东西，TODO
         //
 
         // top,lower
@@ -399,7 +399,7 @@ SamplePlayer::handleActionEnd()
     //
     // ball position & velocity
     //
-    dlog.addText( Logger::WORLD,
+    dlog.addText( Logger::WORLD,                                        //给日志添加记录
                   "WM: BALL pos=(%lf, %lf), vel=(%lf, %lf, r=%lf, ang=%lf)",
                   world().ball().pos().x,
                   world().ball().pos().y,
@@ -445,7 +445,7 @@ SamplePlayer::handleActionEnd()
 void
 SamplePlayer::handleServerParam()                                       //处理服务器参数
 {
-    if ( KickTable::instance().createTables() )
+    if ( KickTable::instance().createTables() )                         //判断kicktable是否成功访问
     {
         std::cerr << world().teamName() << ' '
                   << world().self().unum() << ": "
