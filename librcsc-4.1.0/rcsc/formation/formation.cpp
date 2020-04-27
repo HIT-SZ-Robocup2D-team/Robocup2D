@@ -55,7 +55,7 @@ using namespace formation;
 /*!
 
 */
-Formation::Creators &                 //
+Formation::Creators &                 //调用这个函数返回creator
 Formation::creators()
 {
     static Creators s_instance;
@@ -94,12 +94,12 @@ Formation::create( const std::string & name )
 
 */
 Formation::Ptr
-Formation::create( std::istream & is )
+Formation::create( std::istream & is )                                  //从输入流获得阵型名称，然后调用上一个create函数创建阵型
 {
     std::string temp, type;
     is >> temp >> type;
 
-    is.seekg( 0 );
+    is.seekg( 0 );                                                      //在输入流中重新定位到起始位置（偏移量为0）
     return create( type );
 }
 
@@ -108,7 +108,7 @@ Formation::create( std::istream & is )
 /*!
 
  */
-Formation::Formation()
+Formation::Formation()                                                  //类的构造函数，先把M_symmetry_number全部初始化为-1，顺便把M_version和M_samples给赋值了
     : M_version( 0 )
     , M_samples( new SampleDataSet() )
 {
@@ -206,7 +206,7 @@ Formation::setSymmetryType( const int unum,                            //给球�
 
 
     // check if unum is already assigned as original side type player.
-    for ( int i = 0; i < 11; ++i )                                      ///确定这个要设置的symmetry_unum不能被其他球员占了
+    for ( int i = 0; i < 11; ++i )                                      //确定这个要设置的symmetry_unum不能被其他球员占了
     {
         if ( i + 1 == unum ) continue;
         if ( M_symmetry_number[i] == symmetry_unum )
@@ -442,9 +442,9 @@ Formation::printHeader( std::ostream & os ) const                       //打印
 
  */
 std::ostream &
-Formation::printSamples( std::ostream & os ) const                      //打印Header
+Formation::printSamples( std::ostream & os ) const                      //打印samples
 {
-    if ( M_samples )                                                    //只在sample>0才打印
+    if ( M_samples )                                                    //只在samples不为NULL才打印
     {
         M_samples->print( os );
     }

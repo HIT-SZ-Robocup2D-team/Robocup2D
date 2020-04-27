@@ -4,6 +4,10 @@
   \file formation_static.h
   \brief static type formation method classes Header File.
 */
+/**和formation.cpp最接近，应该是最简单的一种formation，大部分仍然使用formation的原版函数，
+ * 后面的formationxxx应该都是基于这个进行完善的
+ * train函数体依旧为空
+ */
 
 /*
  *Copyright:
@@ -182,7 +186,7 @@ private:
       \param is reference to the input stream.
       \return parsing result
      */
-    bool readPlayers( std::istream & is );
+    bool readPlayers( std::istream & is );                              //从输入流中读取球员数据
 
 };
 

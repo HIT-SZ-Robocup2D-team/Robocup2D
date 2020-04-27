@@ -4,6 +4,7 @@
   \file sample_data.h
   \brief formation sample data class Header File.
 */
+/**定义基本的数据类型和操作，在formation中找不到的操作可以在这个地方找一下看看*/
 
 /*
  *Copyright:

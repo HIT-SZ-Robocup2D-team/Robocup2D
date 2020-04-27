@@ -80,7 +80,7 @@ FormationSBSP::Role::Role( const Vector2D & attract,
 void
 FormationSBSP::Role::randomize()
 {
-    UniformReal rng( -1.0, 1.0 );
+    UniformReal rng( -1.0, 1.0 );                                       //在-1和1之间生成随机数，详见random.h
 
     pos_.x = 52.5 * rng();
     pos_.y = 34.0 * rng();
@@ -189,12 +189,12 @@ FormationSBSP::Param::getPosition( const int unum,
 {
     const Role & role = getRole( unum );
 
-    Vector2D position = role.pos_;
+    Vector2D position = role.pos_;                  
 
     position.x += ball_pos.x * role.attract_.x;
     position.y += ball_pos.y * role.attract_.y;
 
-    position.x = min_max( role.region_.left(),
+    position.x = min_max( role.region_.left(),                          //min_max函数功能：先比较前两个参数得出最大值，再和第三个参数比较出最小值
                           position.x,
                           role.region_.right() );
     position.y = min_max( role.region_.top(),
@@ -229,7 +229,7 @@ FormationSBSP::getPositions( const Vector2D & focus_point,
 
 */
 bool
-FormationSBSP::Param::check()
+FormationSBSP::Param::check()                                           //检查各种球员的数据是否正常
 {
     for ( std::size_t i = 0; i < 11; ++i )
     {
@@ -310,7 +310,7 @@ FormationSBSP::Param::check()
 void
 FormationSBSP::Param::createSymmetryParam()
 {
-    for ( std::size_t i = 0; i < 11; ++i )
+    for ( std::size_t i = 0; i < 11; ++i )                              //size_t增强健壮性，理论上可以存下所有“良好的“结构
     {
         int symmetry = M_roles[i].symmetry_;
         if ( symmetry <= 0 )
@@ -460,7 +460,7 @@ FormationSBSP::createDefaultData()
     data.players_.push_back( Vector2D( 10.0, 22.0 ) );
     data.players_.push_back( Vector2D( 10.0, 0.0 ) );
 
-    M_samples->addData( *this, data, false );
+    M_samples->addData( *this, data, false );                           //暂时没找到addData这个函数
 }
 
 
@@ -472,7 +472,7 @@ void
 FormationSBSP::setRoleName( const int unum,
                             const std::string & name )
 {
-    if ( unum < 1 || 11 < unum )
+    if ( unum < 1 || 11 < unum )                                        //判断unum是否合法
     {
         std::cerr << __FILE__ << ":" << __LINE__
                   << " *** ERROR *** invalid unum " << unum
@@ -548,8 +548,8 @@ Vector2D
 FormationSBSP::getPosition( const int unum,
                             const Vector2D & ball_pos ) const
 {
-    try
-    {
+    try                                                                 //try-catch用于程序异常处理，如果try语句没有出现异常，就执行catch块之后的语句，如果出现异常就从第一个catch块开始，
+    {                                                                   //匹配错误类型和括号里是否相同，相同则执行它来处理，不同则继续往下找，所有catch块都寻找完毕后，如果仍没有找到，就返回到上一层函数寻找有没有匹配的catch，直到main函数
         return param().getPosition( unum, ball_pos );
     }
     catch ( std::exception & e )
