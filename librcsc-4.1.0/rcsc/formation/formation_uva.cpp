@@ -4,6 +4,8 @@
   \file formation_uva.cpp
   \brief UvA Trilearn type formation method classes Source File.
 */
+/**人员的分配略有不同
+ */
 
 /*
  *Copyright:
