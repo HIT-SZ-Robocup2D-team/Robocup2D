@@ -115,7 +115,7 @@ Strategy::Strategy()
     M_role_factory[RoleSideForward::name()] = &RoleSideForward::create;
     M_role_factory[RoleCenterForward::name()] = &RoleCenterForward::create;
 
-    // keepaway防守，类似于逼抢，可以用强化学习来训练
+    // keepaway防守，几个球员围成一圈，中间一个球员，球在外面的球员之间轮转，然后里面的球员想办法抢到，可以用强化学习来训练
     M_role_factory[RoleKeepawayKeeper::name()] = &RoleKeepawayKeeper::create;  
     M_role_factory[RoleKeepawayTaker::name()] = &RoleKeepawayTaker::create;
 
@@ -208,7 +208,7 @@ Strategy::read( const std::string & formation_dir )
     }
 
     ///////////////////////////////////////////////////////////
-    M_normal_formation = readFormation( configpath + NORMAL_FORMATION_CONF ); //同上读取其他formation
+    M_normal_formation = readFormation( configpath + NORMAL_FORMATION_CONF ); //同上读取其他formation到变量中方便后面调用
     if ( ! M_normal_formation )
     {
         std::cerr << "Failed to read normal formation" << std::endl;
@@ -432,7 +432,7 @@ Strategy::createFormation( const std::string & type_name ) const        //创建
 
  */
 void
-Strategy::update( const WorldModel & wm )                               //用于和world_model中的时间保持同步，更新情况
+Strategy::update( const WorldModel & wm )                               //用于和world_model中的时间保持同步，更新situation和position
 {
     static GameTime s_update_time( -1, 0 );
 
@@ -578,7 +578,7 @@ Strategy::updateSituation( const WorldModel & wm )                      //更新
                           __FILE__": Situation PenaltyKick" );
             M_current_situation = PenaltyKick_Situation;
         }
-        else if ( wm.gameMode().isPenaltyKickMode() )                   /**这里可能有bug*/
+        else if ( wm.gameMode().isPenaltyKickMode() )                   /**这里可能有bug，应该是和下面的一样OurSetPlay*/
         {
             dlog.addText( Logger::TEAM,
                           __FILE__": Situation OurSetPlay" );
@@ -620,7 +620,7 @@ Strategy::updateSituation( const WorldModel & wm )                      //更新
 
 /*-------------------------------------------------------------------*/
 /*!
-
+关于Formation的跑位应该在这个位置！！！
  */
 void
 Strategy::updatePosition( const WorldModel & wm )                       //更新位置，包括球和球员
