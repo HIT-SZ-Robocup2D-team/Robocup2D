@@ -626,13 +626,13 @@ void
 Strategy::updatePosition( const WorldModel & wm )                       //更新位置，包括球和球员
 {
     static GameTime s_update_time( 0, 0 );
-    if ( s_update_time == wm.time() )
+    if ( s_update_time == wm.time() )                                   //意思是比赛还未开始
     {
         return;
     }
-    s_update_time = wm.time();
+    s_update_time = wm.time();                                          //将s_update_time调整为与当前world_model一致
 
-    Formation::Ptr f = getFormation( wm );
+    Formation::Ptr f = getFormation( wm );                              //读取当前应该使用的阵型
     if ( ! f )
     {
         std::cerr << wm.teamName() << ':' << wm.self().unum() << ": "
@@ -650,15 +650,15 @@ Strategy::updatePosition( const WorldModel & wm )                       //更新
         ball_step = std::min( ball_step, wm.interceptTable()->selfReachCycle() );
     }
 
-    Vector2D ball_pos = wm.ball().inertiaPoint( ball_step );
+    Vector2D ball_pos = wm.ball().inertiaPoint( ball_step );            //利用ball_step，在world_model中得到球的位置
 
     dlog.addText( Logger::TEAM,
                   __FILE__": HOME POSITION: ball pos=(%.1f %.1f) step=%d",
                   ball_pos.x, ball_pos.y,
                   ball_step );
 
-    M_positions.clear();
-    f->getPositions( ball_pos, M_positions );
+    M_positions.clear();                                         //将原有的球员位置数组清空
+    f->getPositions( ball_pos, M_positions );                   //重新根据球的位置确定球员所在位置
 
     if ( ServerParam::i().useOffside() )
     {
@@ -768,10 +768,10 @@ Strategy::getPosition( const int unum ) const
         return Vector2D::INVALIDATED;
     }
 
-    try
+    try                                              //try-catch是处理异常的语句块，这里直接视为会返回一个球员应该移动到的地方即可
     {
-        return M_positions.at( number - 1 );
-    }
+        return M_positions.at( number - 1 );         //=M_position[number-1]
+    } 
     catch ( std::exception & e )
     {
         std::cerr<< __FILE__ << ':' << __LINE__ << ':'
@@ -791,7 +791,7 @@ Strategy::getFormation( const WorldModel & wm ) const
     //
     // play on
     //
-    if ( wm.gameMode().type() == GameMode::PlayOn )
+    if ( wm.gameMode().type() == GameMode::PlayOn )         //在正常比赛活球期间，总共三种状态defense，offense，normal
     {
         switch ( M_current_situation ) {
         case Defense_Situation:
@@ -807,15 +807,15 @@ Strategy::getFormation( const WorldModel & wm ) const
     //
     // kick in, corner kick
     //
-    if ( wm.gameMode().type() == GameMode::KickIn_
+    if ( wm.gameMode().type() == GameMode::KickIn_              //进球后或角球阶段
          || wm.gameMode().type() == GameMode::CornerKick_ )
     {
-        if ( wm.ourSide() == wm.gameMode().side() )
+        if ( wm.ourSide() == wm.gameMode().side() )       //己方控球
         {
             // our kick-in or corner-kick
             return M_kickin_our_formation;
         }
-        else
+        else                                                 //对方控球
         {
             return M_setplay_opp_formation;
         }
@@ -824,7 +824,7 @@ Strategy::getFormation( const WorldModel & wm ) const
     //
     // our indirect free kick
     //
-    if ( ( wm.gameMode().type() == GameMode::BackPass_
+    if ( ( wm.gameMode().type() == GameMode::BackPass_    //对方回传违例或者己方需要非直接罚球
            && wm.gameMode().side() == wm.theirSide() )
          || ( wm.gameMode().type() == GameMode::IndFreeKick_
               && wm.gameMode().side() == wm.ourSide() ) )
@@ -835,7 +835,7 @@ Strategy::getFormation( const WorldModel & wm ) const
     //
     // opponent indirect free kick
     //
-    if ( ( wm.gameMode().type() == GameMode::BackPass_
+    if ( ( wm.gameMode().type() == GameMode::BackPass_    //对方获得非直接罚球的机会
            && wm.gameMode().side() == wm.ourSide() )
          || ( wm.gameMode().type() == GameMode::IndFreeKick_
               && wm.gameMode().side() == wm.theirSide() ) )
@@ -846,25 +846,25 @@ Strategy::getFormation( const WorldModel & wm ) const
     //
     // after foul
     //
-    if ( wm.gameMode().type() == GameMode::FoulCharge_
+    if ( wm.gameMode().type() == GameMode::FoulCharge_        //发生犯规的情形
          || wm.gameMode().type() == GameMode::FoulPush_ )
     {
-        if ( wm.gameMode().side() == wm.ourSide() )
+        if ( wm.gameMode().side() == wm.ourSide() )          //己方犯规
         {
             //
             // opponent (indirect) free kick
             //
-            if ( wm.ball().pos().x < ServerParam::i().ourPenaltyAreaLineX() + 1.0
+            if ( wm.ball().pos().x < ServerParam::i().ourPenaltyAreaLineX() + 1.0    //在禁区附近犯规，会在禁区附近进行罚球
                  && wm.ball().pos().absY() < ServerParam::i().penaltyAreaHalfWidth() + 1.0 )
             {
                 return M_indirect_freekick_opp_formation;
             }
-            else
+            else                                                        //在禁区外的地方开球
             {
                 return M_setplay_opp_formation;
             }
         }
-        else
+        else                                            //同上，对方犯规
         {
             //
             // our (indirect) free kick
@@ -884,13 +884,13 @@ Strategy::getFormation( const WorldModel & wm ) const
     //
     // goal kick
     //
-    if ( wm.gameMode().type() == GameMode::GoalKick_ )
+    if ( wm.gameMode().type() == GameMode::GoalKick_ )    //如果完成得分
     {
-        if ( wm.gameMode().side() == wm.ourSide() )
+        if ( wm.gameMode().side() == wm.ourSide() )      //己方得分
         {
             return M_goal_kick_our_formation;
         }
-        else
+        else                                                 //对方得分
         {
             return M_goal_kick_opp_formation;
         }
@@ -898,7 +898,7 @@ Strategy::getFormation( const WorldModel & wm ) const
 
     //
     // goalie catch
-    //
+    //守门员抓到球
     if ( wm.gameMode().type() == GameMode::GoalieCatch_ )
     {
         if ( wm.gameMode().side() == wm.ourSide() )
@@ -913,7 +913,7 @@ Strategy::getFormation( const WorldModel & wm ) const
 
     //
     // before kick off
-    //
+    //开秋前
     if ( wm.gameMode().type() == GameMode::BeforeKickOff
          || wm.gameMode().type() == GameMode::AfterGoal_ )
     {
@@ -922,12 +922,13 @@ Strategy::getFormation( const WorldModel & wm ) const
 
     //
     // other set play
-    //
+    //轮到己方设置阵型
     if ( wm.gameMode().isOurSetPlay( wm.ourSide() ) )
     {
         return M_setplay_our_formation;
     }
-
+    
+	//没有处于正常的开球活球阶段
     if ( wm.gameMode().type() != GameMode::PlayOn )
     {
         return M_setplay_opp_formation;
@@ -935,7 +936,7 @@ Strategy::getFormation( const WorldModel & wm ) const
 
     //
     // unknown
-    //
+    //如果都不是这些状态，就使用常规的offense，defense，normal
     switch ( M_current_situation ) {
     case Defense_Situation:
         return M_defense_formation;
@@ -956,11 +957,11 @@ Strategy::BallArea
 Strategy::get_ball_area( const WorldModel & wm )                        
 {
     int ball_step = 1000;
-    ball_step = std::min( ball_step, wm.interceptTable()->teammateReachCycle() );
+    ball_step = std::min( ball_step, wm.interceptTable()->teammateReachCycle() );  //ball_step取队友到球，对手到球和自己到球距离的最小值
     ball_step = std::min( ball_step, wm.interceptTable()->opponentReachCycle() );
     ball_step = std::min( ball_step, wm.interceptTable()->selfReachCycle() );
 
-    return get_ball_area( wm.ball().inertiaPoint( ball_step ) );
+    return get_ball_area( wm.ball().inertiaPoint( ball_step ) );       //推测球可能前往的区域（ball_object中inertia_final_point函数没有找到函数实现
 }
 
 /*-------------------------------------------------------------------*/
@@ -968,7 +969,7 @@ Strategy::get_ball_area( const WorldModel & wm )
 
  */
 Strategy::BallArea
-Strategy::get_ball_area( const Vector2D & ball_pos )                    //添加log
+Strategy::get_ball_area( const Vector2D & ball_pos )                    //添加log，并记录相应的球所在的区域
 {
     dlog.addLine( Logger::TEAM,
                   52.5, -17.0, -52.5, -17.0,

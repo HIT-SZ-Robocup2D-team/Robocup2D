@@ -3,6 +3,7 @@
 /*!
   \file intercept_table.cpp
   \brief interception info holder Source File
+  对周边环境进行考察
 */
 
 /*

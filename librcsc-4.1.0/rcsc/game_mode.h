@@ -3,6 +3,7 @@
 /*!
   \file game_mode.h
   \brief playmode wrapper Header File
+  根据球场的时间及信息确定球场的状态
 */
 
 /*
@@ -54,37 +55,37 @@ public:
     /*!
       \brief playmode type Id
     */
-    enum Type {
-        BeforeKickOff,
-        TimeOver,
-        PlayOn,
-        KickOff_,    // Left | Right
-        KickIn_,     // Left | Right
-        FreeKick_,   // Left | Right
-        CornerKick_, // Left | Right
-        GoalKick_,   // Left | Right
-        AfterGoal_,  // Left | Right
+    enum Type {                                                         //定义球场状态类型
+        BeforeKickOff,        //开秋前
+        TimeOver,             //全场终
+        PlayOn,               //正常比赛
+        KickOff_,    // Left | Right 开球
+        KickIn_,     // Left | Right 边界球
+        FreeKick_,   // Left | Right 罚任意球
+        CornerKick_, // Left | Right 角球
+        GoalKick_,   // Left | Right 球门球
+        AfterGoal_,  // Left | Right 完成得分，需要将球员移回半场
         //Drop_Ball,   // Left | Right
-        OffSide_,    // Left | Right
-        PenaltyKick_,         // Left | Right
-        FirstHalfOver,
-        Pause,
-        Human,
-        FoulCharge_, // Left | Right
+        OffSide_,    // Left | Right 越位
+        PenaltyKick_,         // Left | Right 罚球
+        FirstHalfOver,   //上班场结束
+        Pause,       //暂停
+        Human,       //人工裁判干预
+        FoulCharge_, // Left | Right 一些犯规类型，暂时没查到是什么意思
         FoulPush_,   // Left | Right
         FoulMultipleAttacker_, // Left | Right
         FoulBallOut_,    // Left | Right
-        BackPass_,       // Left | Right
-        FreeKickFault_, // Left | Right
+        BackPass_,       // Left | Right 回传违例（指队友将球传给守门员守门员扑）
+        FreeKickFault_, // Left | Right  发球违例（一般指传给自己）
 
-        CatchFault_, // Left | Right
-        IndFreeKick_, // Left | Right
+        CatchFault_, // Left | Right  守门员扑球违例（禁区外扑球）
+        IndFreeKick_, // Left | Right 非直接罚球（不能直接射门，必须再经过至少一个球员的脚）
 
-        PenaltySetup_, // Left | Right
-        PenaltyReady_, // Left | Right
-        PenaltyTaken_, // Left | Right
-        PenaltyMiss_, // Left | Right
-        PenaltyScore_, // Left | Right
+        PenaltySetup_, // Left | Right   //罚球设置
+        PenaltyReady_, // Left | Right   //罚球准备
+        PenaltyTaken_, // Left | Right   //罚球执行
+        PenaltyMiss_, // Left | Right    //罚球丢球
+        PenaltyScore_, // Left | Right    //罚球得分
 
         // these are not a real playmode
         PenaltyOnfield_, // next real playmode is PenaltySetup_
@@ -175,7 +176,7 @@ public:
     "red_card_SIDE_UNUM"
     */
 
-    typedef std::pair< Type, rcsc::SideID > Pair; //!< alias of the pair of playmode type and side type
+    typedef std::pair< Type, rcsc::SideID > Pair; //!< alias of the pair of playmode type and side type（sideId为-1，0，1分别表示右，中，左
 
 private:
 

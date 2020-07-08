@@ -450,7 +450,7 @@ FormationBPN::getPositions( const Vector2D & focus_point,
 
     for ( int unum = 1; unum <= 11; ++unum )
     {
-        positions.push_back( getPosition( unum, focus_point ) );
+        positions.push_back( ( unum, focus_point ) );
     }
 }
 

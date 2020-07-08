@@ -3,6 +3,7 @@
 /*!
   \file world_model.h
   \brief world model Header File
+  是每个球员自己的world_model，教练的是global_world_model
 */
 
 /*
