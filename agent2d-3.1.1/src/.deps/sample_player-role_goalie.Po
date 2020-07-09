@@ -334,7 +334,8 @@ sample_player-role_goalie.o: role_goalie.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/smart_ptr/detail/operator_bool.hpp \
  /usr/include/boost/smart_ptr/detail/local_sp_deleter.hpp \
  /usr/include/boost/smart_ptr/detail/local_counted_base.hpp \
- bhv_goalie_basic_move.h /usr/local/include/rcsc/geom/vector_2d.h \
+ bhv_goalie_chase_ball.h /usr/local/include/rcsc/player/soccer_action.h \
+ /usr/local/include/rcsc/geom/vector_2d.h \
  /usr/local/include/rcsc/geom/angle_deg.h /usr/include/c++/7/cmath \
  /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
@@ -344,8 +345,7 @@ sample_player-role_goalie.o: role_goalie.cpp /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h \
- /usr/local/include/rcsc/player/soccer_action.h bhv_goalie_chase_ball.h \
+ /usr/include/x86_64-linux-gnu/bits/mathinline.h bhv_goalie_basic_move.h \
  bhv_goalie_free_kick.h /usr/local/include/rcsc/action/basic_actions.h \
  /usr/local/include/rcsc/action/arm_off.h \
  /usr/local/include/rcsc/action/arm_point_to_point.h \
@@ -1390,7 +1390,9 @@ soccer_role.h:
 
 /usr/include/boost/smart_ptr/detail/local_counted_base.hpp:
 
-bhv_goalie_basic_move.h:
+bhv_goalie_chase_ball.h:
+
+/usr/local/include/rcsc/player/soccer_action.h:
 
 /usr/local/include/rcsc/geom/vector_2d.h:
 
@@ -1418,9 +1420,7 @@ bhv_goalie_basic_move.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathinline.h:
 
-/usr/local/include/rcsc/player/soccer_action.h:
-
-bhv_goalie_chase_ball.h:
+bhv_goalie_basic_move.h:
 
 bhv_goalie_free_kick.h:
 

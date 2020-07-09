@@ -15,7 +15,7 @@ DIR=`dirname $0`
 
 player="${DIR}/sample_player"
 coach="${DIR}/sample_coach"
-trainer="${DIR}/helios_trainer"
+trainer="${DIR}/sample_trainer"
 teamname="HELIOS"
 host="localhost"
 

@@ -200,7 +200,7 @@ SampleCoach::actionImpl()
 {
     debugClient().addMessage( "Cycle=%ld", world().time().cycle() );
 
-    if ( world().time().cycle() == 0
+    if ( world().time().cycle() == 0                                    //使用球队图标
          && config().useTeamGraphic()
          && M_team_graphic.tiles().size() != teamGraphicOKSet().size() )
     {

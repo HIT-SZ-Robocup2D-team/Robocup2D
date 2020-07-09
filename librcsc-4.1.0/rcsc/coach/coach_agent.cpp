@@ -864,13 +864,13 @@ CoachAgent::action()
 
     M_worldmodel.updateJustBeforeDecision( M_impl->current_time_ );
 
-    if ( M_impl->last_decision_time_ != M_impl->current_time_ )
+    if ( M_impl->last_decision_time_ != M_impl->current_time_ )     //“大脑”进行决策
     {
         actionImpl();
         M_impl->last_decision_time_ = M_impl->current_time_;
     }
 
-    if ( M_impl->think_received_ )
+    if ( M_impl->think_received_ )                                //将决策结果发送出去
     {
         CoachDoneCommand com;
         sendCommand( com );

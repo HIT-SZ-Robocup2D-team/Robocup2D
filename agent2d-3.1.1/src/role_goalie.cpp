@@ -30,9 +30,9 @@
 
 #include "role_goalie.h"
 
-#include "bhv__chase_ball.h"
-#include "bhv_goalie_goalie_basic_move.h"
-#include "bhv_goaliefree_kick.h"
+#include "bhv_goalie_chase_ball.h"
+#include "bhv_goalie_basic_move.h"
+#include "bhv_goalie_free_kick.h"
 
 #include <rcsc/action/basic_actions.h>
 #include <rcsc/action/neck_scan_field.h>

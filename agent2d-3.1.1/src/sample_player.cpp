@@ -229,11 +229,11 @@ SamplePlayer::actionImpl()
     // update strategy and analyzer
     //
     Strategy::instance().update( world() );                             //先根据世界模型更新strategy
-    FieldAnalyzer::instance().update( world() );
+    FieldAnalyzer::instance().update( world() );                        //并用分析器分析
 
     //
     // prepare action chain
-    //
+    //设置动作链
     M_field_evaluator = createFieldEvaluator();
     M_action_generator = createActionGenerator();
 
@@ -261,7 +261,7 @@ SamplePlayer::actionImpl()
     //
     SoccerRole::Ptr role_ptr;
     {
-        role_ptr = Strategy::i().createRole( world().self().unum(), world() );  //不知道i函数是为什么，好像有点多此一举
+        role_ptr = Strategy::i().createRole( world().self().unum(), world() );  
 
         if ( ! role_ptr )
         {

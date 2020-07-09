@@ -124,7 +124,7 @@ Strategy::Strategy()
     //
 
     M_formation_factory[FormationStatic::name()] = &FormationStatic::create; //指向formation的指针，name（）返回当前的formation type名称，这里不是数组，而是Hash，相当于找到一个string为FormationStatic::name()的位置，赋值为&FormationStatic::create，两个就联结起来了
-    M_formation_factory[DT::name()] = &FormationDT::create;                  //同上
+    M_formation_factory[FormationDT::name()] = &FormationDT::create;                  //同上
 #endif
 
     for ( size_t i = 0; i < M_role_number.size(); ++i )
@@ -657,10 +657,10 @@ Strategy::updatePosition( const WorldModel & wm )                       //更新
                   ball_pos.x, ball_pos.y,
                   ball_step );
 
-    M_positions.clear();                                         //将原有的球员位置数组清空
+    M_positions.clear();                                         //将原有的球员跑位位置数组清空
     f->getPositions( ball_pos, M_positions );                   //重新根据球的位置确定球员所在位置
 
-    if ( ServerParam::i().useOffside() )
+    if ( ServerParam::i().useOffside() )                           //为了避免越位需要进行调整
     {
         double max_x = wm.offsideLineX();
         if ( ServerParam::i().kickoffOffside()

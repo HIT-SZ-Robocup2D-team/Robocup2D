@@ -79,7 +79,7 @@ usage()
    echo "                               FULLSTATE_TYPE is one of [ignore|reference|override].") 1>&2
 }
 
-while [ $# -gt 0 ]
+while [ $# -gt 0 ]   #所有参数都大于0
 do
   case $1 in
 
