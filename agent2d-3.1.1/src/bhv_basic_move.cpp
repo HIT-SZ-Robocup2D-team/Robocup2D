@@ -63,7 +63,7 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
 
     //-----------------------------------------------
     // tackle
-    if ( Bhv_BasicTackle( 0.8, 80.0 ).execute( agent ) )    //判断是否满足截球的最低条件，传入两个参数是截球的最低条件
+    if ( Bhv_BasicTackle( 0.8, 60.0 ).execute( agent ) )    //判断是否满足截球的最低条件，传入两个参数是截球的最低条件
     {
         return true;
     }
@@ -75,19 +75,23 @@ Bhv_BasicMove::execute( PlayerAgent * agent )
     const int mate_min = wm.interceptTable()->teammateReachCycle();
     const int opp_min = wm.interceptTable()->opponentReachCycle();
 
-    if ( ! wm.existKickableTeammate()                              //不是队友持球
-         && ( self_min <= 3                                        //自己到球的时间小于3个周期，或者自己比队友或对手能够更快到达球
-              || ( self_min <= mate_min
-                   && self_min < opp_min + 3 )
+    if ( ! wm.existKickableTeammate()                              //不是队友持球(防止截自己人）
+         && ( self_min <= 5                                        //增加夹击效果
+              || ( wm.self().pos().absX() > 20 
+                   && self_min <= mate_min
+                   && self_min < opp_min + 5 )
               )
          )
     {
-        dlog.addText( Logger::TEAM,
-                      __FILE__": intercept" );
-        Body_Intercept().execute( agent );
-        agent->setNeckAction( new Neck_OffensiveInterceptNeck() );
+		if(!(self_min > mate_min && mate_min < opp_min -3 ))         //确保有一个队友跟防
+		{
+				dlog.addText( Logger::TEAM,
+							__FILE__": intercept" );
+				Body_Intercept().execute( agent );
+				agent -> setNeckAction( new Neck_OffensiveInterceptNeck() );
 
-        return true;
+				return true;
+		}
     }
 
     const Vector2D target_point = Strategy::i().getPosition( wm.self().unum() );

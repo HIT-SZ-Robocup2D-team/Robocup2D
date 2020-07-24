@@ -175,7 +175,7 @@ evaluate_state( const PredictState & state )
     {
 		double nearnest_self_dist;                     //临时变量
 		state.getOpponentNearestTo( state.self().pos(),10, &nearnest_self_dist );   //最近的对手距离
-  		if (nearnest_self_dist < 8)                    //对手距离很近
+  		if (nearnest_self_dist < 7)                    //对手距离很近
   		{
 #ifdef DEBUG_PRINT
 			dlog.addText( Logger::ACTION_CHAIN,
