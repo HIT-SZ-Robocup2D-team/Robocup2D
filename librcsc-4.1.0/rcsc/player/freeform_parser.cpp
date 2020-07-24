@@ -60,7 +60,7 @@ FreeformParser::FreeformParser( WorldModel & world )
 
 */
 int
-FreeformParser::parse( const char * msg )
+FreeformParser::parse( const char * msg )                               //接受教练发来的对手type信息
 {
     if ( std::strncmp( msg, "(player_types ", 14 ) != 0 )
     {

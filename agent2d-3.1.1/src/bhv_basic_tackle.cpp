@@ -155,7 +155,7 @@ Bhv_BasicTackle::executeOld( PlayerAgent * agent )
 
     double tackle_power = SP.maxTacklePower();
 
-    if ( wm.self().body().abs() < M_body_thr )
+    if ( wm.self().body().abs() < M_body_thr )   //身体的角度小于身体所能转过的角度
     {
         dlog.addText( Logger::TEAM,
                       __FILE__": Bhv_BasicTackle. (old) body dir tackle" );

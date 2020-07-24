@@ -32,8 +32,8 @@
 class Bhv_BasicTackle
     : public rcsc::SoccerBehavior {
 private:
-    const double M_min_probability;
-    const double M_body_thr;
+    const double M_min_probability;    //最小可以引发截球的概率
+    const double M_body_thr;           //一个角度
 public:
     Bhv_BasicTackle( const double & min_prob,
                      const double & body_thr )

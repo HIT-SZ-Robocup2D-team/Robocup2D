@@ -466,7 +466,7 @@ SampleCoach::doSubstituteTiredPlayers()
           t != end;
           ++t )
     {
-        if ( (*t)->recovery() < ServerParam::i().recoverInit() - 0.002 )
+        if ( (*t)->recovery() < ServerParam::i().recoverInit() - 0.002 )   //筛选疲劳球员
         {
             tired_teammate_unum.push_back( (*t)->unum() );
         }
@@ -634,7 +634,7 @@ SampleCoach::getFastestType( PlayerTypePtrCont & candidates )
 
 /*-------------------------------------------------------------------*/
 /*!
-
+发送对手的建模情况
 */
 void
 SampleCoach::sayPlayerTypes()

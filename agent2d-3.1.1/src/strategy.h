@@ -190,7 +190,7 @@ public:
     SoccerRole::Ptr createRole( const int unum,                         //给传入一个球员的num，为这个球员创造role
                                 const rcsc::WorldModel & wm ) const;
     PositionType getPositionType( const int unum ) const;               //根据球员号码判断他是在side还是center
-    rcsc::Vector2D getPosition( const int unum ) const;                 //根据球员号码获取球员位置
+    rcsc::Vector2D getPosition( const int unum ) const;                 //根据球员号码获取球员应该处于的位置
 
 
 private:

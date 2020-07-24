@@ -265,7 +265,7 @@ SampleTrainer::doSubstitute()
 
 /*-------------------------------------------------------------------*/
 /*!
-
+还没有写出来，可以自己进行填充
  */
 void
 SampleTrainer::doKeepaway()

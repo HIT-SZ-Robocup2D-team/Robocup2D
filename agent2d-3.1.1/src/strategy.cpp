@@ -570,7 +570,7 @@ Strategy::updateSituation( const WorldModel & wm )                      //更新
 {
     M_current_situation = Normal_Situation;
 
-    if ( wm.gameMode().type() != GameMode::PlayOn )
+    if ( wm.gameMode().type() != GameMode::PlayOn )                     //比赛状态判断
     {
         if ( wm.gameMode().isPenaltyKickMode() )                        //点球状态
         {
@@ -598,7 +598,7 @@ Strategy::updateSituation( const WorldModel & wm )                      //更新
     int opp_min = wm.interceptTable()->opponentReachCycle();
     int our_min = std::min( self_min, mate_min );
 
-    if ( opp_min <= our_min - 2 )
+    if ( opp_min <= our_min - 2 )                                       //球队状态判断
     {
         dlog.addText( Logger::TEAM,
                       __FILE__": Situation Defense" );
@@ -674,7 +674,7 @@ Strategy::updatePosition( const WorldModel & wm )                       //更新
             int mate_step = wm.interceptTable()->teammateReachCycle();
             if ( mate_step < 50 )
             {
-                Vector2D trap_pos = wm.ball().inertiaPoint( mate_step );
+                Vector2D trap_pos = wm.ball().inertiaPoint( mate_step );   //让队友去截球，自己前往队友的位置补位
                 if ( trap_pos.x > max_x ) max_x = trap_pos.x;
             }
 
@@ -694,7 +694,7 @@ Strategy::updatePosition( const WorldModel & wm )                       //更新
         }
     }
 
-    M_position_types.clear();
+    M_position_types.clear();                                      //更新position_type
     for ( int unum = 1; unum <= 11; ++unum )
     {
         PositionType type = Position_Center;
