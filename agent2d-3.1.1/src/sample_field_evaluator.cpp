@@ -166,6 +166,24 @@ evaluate_state( const PredictState & state )
 
         return - DBL_MAX / 2.0;
     }
+    
+    
+    //
+    //添加向后传球的选项
+    //
+    if(state.self().pos().x > 0 && state.self().face().cos() < 0 && state.ball().pos().x < state.self().pos().x - 5)   //前置条件为脖子向后转可以看到后面的视野，且球位于可以踢到的位置
+    {
+		double nearnest_self_dist;                     //临时变量
+		state.getOpponentNearestTo( state.self().pos(),10, &nearnest_self_dist );   //最近的对手距离
+  		if (nearnest_self_dist < 8)                    //对手距离很近
+  		{
+#ifdef DEBUG_PRINT
+			dlog.addText( Logger::ACTION_CHAIN,
+                      "(eval) XXX back pass" );
+#endif
+			return +1.0e+6;
+		}
+	}
 
 
     //
