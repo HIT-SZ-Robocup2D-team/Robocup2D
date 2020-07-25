@@ -41,6 +41,7 @@ class ActionStatePair;
 
 class SampleFieldEvaluator
     : public FieldEvaluator {
+			
 private:
 
 public:
@@ -52,6 +53,8 @@ public:
     virtual
     double operator()( const PredictState & state,
                        const std::vector< ActionStatePair > & path ) const;
+              
+
 };
 
 #endif

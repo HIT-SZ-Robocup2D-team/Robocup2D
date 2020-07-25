@@ -41,6 +41,8 @@
 #include <cmath>
 #include <cfloat>
 
+#define Pass 2
+
 // #define DEBUG_PRINT
 
 using namespace rcsc;
@@ -53,6 +55,7 @@ static const int VALID_PLAYER_THRESHOLD = 8;
 
  */
 static double evaluate_state( const PredictState & state );
+static double evaluate_pass_target_state( const PredictState & state, const rcsc::Vector2D target_point ); 
 
 
 /*-------------------------------------------------------------------*/
@@ -79,15 +82,20 @@ SampleFieldEvaluator::~SampleFieldEvaluator()
  */
 double
 SampleFieldEvaluator::operator()( const PredictState & state,
-                                  const std::vector< ActionStatePair > & /*path*/ ) const
+                                  const std::vector< ActionStatePair > & path ) const  //将SampleFieldEvaluator重载为一个函数来用，在action_chain_graph->calculateResultBestFirstSearch调用
 {
-    const double final_state_evaluation = evaluate_state( state );
+    double result = evaluate_state( state );    //先用evaluate计算
+    
+    std::vector< ActionStatePair >::const_iterator last_pair = path.end()--;     //得到vector最后一个pair
+
+    
+    if ( last_pair -> action().category() == Pass )                       //如果是传球要考虑传球目标是否合理
+		result += evaluate_pass_target_state( state, last_pair -> action().targetPoint());
 
     //
     // ???
     //
 
-    double result = final_state_evaluation;
 
     return result;
 }
@@ -171,11 +179,12 @@ evaluate_state( const PredictState & state )
     //
     //添加向后传球的选项
     //
-    if(state.self().pos().x > 0 && state.self().face().cos() < 0 && state.ball().pos().x < state.self().pos().x - 5)   //前置条件为脖子向后转可以看到后面的视野，且球位于可以踢到的位置
+    if( state.self().pos().x > 0 && state.self().face().cos() < 0 
+		&& state.ball().pos().x < state.self().pos().x - 5 )   //前置条件为脖子向后转可以看到后面的视野，且球位于可以踢到的位置
     {
 		double nearnest_self_dist;                     //临时变量
 		state.getOpponentNearestTo( state.self().pos(),10, &nearnest_self_dist );   //最近的对手距离
-  		if (nearnest_self_dist < 7)                    //对手距离很近
+  		if ( nearnest_self_dist < 7 )                    //对手距离很近
   		{
 #ifdef DEBUG_PRINT
 			dlog.addText( Logger::ACTION_CHAIN,
@@ -229,4 +238,21 @@ evaluate_state( const PredictState & state )
     }
 
     return point;
+}
+
+static 
+double 
+evaluate_pass_target_state( const PredictState & state, const rcsc::Vector2D target_point )        //判断传球目标点的状况
+{
+	double nearnest_opp_dist;                     //临时变量
+	state.getOpponentNearestTo( target_point, 10, &nearnest_opp_dist );   //最近的对手距离
+	if ( nearnest_opp_dist < 3 )                   //根据对手到目标点的距离赋予权值
+		return -1e-7;
+	if ( nearnest_opp_dist < 7 )
+		return -1e-6;
+	if ( nearnest_opp_dist < 10 )
+		return -1e-5;
+	if ( nearnest_opp_dist > 12 )
+		return +1e+5;
+	return 0;
 }
