@@ -247,11 +247,11 @@ evaluate_pass_target_state( const PredictState & state, const rcsc::Vector2D tar
 	double nearnest_opp_dist;                     //临时变量
 	state.getOpponentNearestTo( target_point, 10, &nearnest_opp_dist );   //最近的对手距离
 	if ( nearnest_opp_dist < 3 )                   //根据对手到目标点的距离赋予权值
-		return -1e-7;
+		return -1e+7;
 	if ( nearnest_opp_dist < 7 )
-		return -1e-6;
+		return -1e+6;
 	if ( nearnest_opp_dist < 10 )
-		return -1e-5;
+		return -1e+5;
 	if ( nearnest_opp_dist > 12 )
 		return +1e+5;
 	return 0;

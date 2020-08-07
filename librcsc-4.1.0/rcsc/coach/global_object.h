@@ -234,6 +234,17 @@ public:
       {
           return M_recovery;
       }
+      
+      /*!
+      \brief get player's card
+      \return card type
+      by Yikai
+     */
+     Card card() const
+     {
+		 return M_card;
+	 }
+	 
 
     /*!
       \brief get player's pointto status

@@ -132,7 +132,7 @@ FormationRBF::Param::readRoleName( std::istream & is )
 bool
 FormationRBF::Param::readParam( std::istream & is )
 {
-    std::string line_buf;                                               定义line_buf来读取信息，方便判断
+    std::string line_buf;                                               //定义line_buf来读取信息，方便判断
     if ( ! std::getline( is, line_buf ) )
     {
         std::cerr  << __FILE__ << ":" << __LINE__
