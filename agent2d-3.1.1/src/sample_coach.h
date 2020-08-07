@@ -93,6 +93,7 @@ private:
 
     void doFirstSubstitute();
     void doSubstituteTiredPlayers();
+    void doSubstituteFouledPlayers();   //替换拿牌球员
 
     void substituteTo( const int unum,
                        const int type );

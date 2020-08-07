@@ -41,7 +41,6 @@
 #include <cmath>
 #include <cfloat>
 
-#define Pass 2
 
 // #define DEBUG_PRINT
 
@@ -55,7 +54,6 @@ static const int VALID_PLAYER_THRESHOLD = 8;
 
  */
 static double evaluate_state( const PredictState & state );
-static double evaluate_pass_target_state( const PredictState & state, const rcsc::Vector2D target_point ); 
 
 
 /*-------------------------------------------------------------------*/
@@ -86,17 +84,8 @@ SampleFieldEvaluator::operator()( const PredictState & state,
 {
     double result = evaluate_state( state );    //先用evaluate计算
     
-    std::vector< ActionStatePair >::const_iterator last_pair = path.end()--;     //得到vector最后一个pair
 
     
-    if ( last_pair -> action().category() == Pass )                       //如果是传球要考虑传球目标是否合理
-		result += evaluate_pass_target_state( state, last_pair -> action().targetPoint());
-
-    //
-    // ???
-    //
-
-
     return result;
 }
 
@@ -240,19 +229,4 @@ evaluate_state( const PredictState & state )
     return point;
 }
 
-static 
-double 
-evaluate_pass_target_state( const PredictState & state, const rcsc::Vector2D target_point )        //判断传球目标点的状况
-{
-	double nearnest_opp_dist;                     //临时变量
-	state.getOpponentNearestTo( target_point, 10, &nearnest_opp_dist );   //最近的对手距离
-	if ( nearnest_opp_dist < 3 )                   //根据对手到目标点的距离赋予权值
-		return -1e+7;
-	if ( nearnest_opp_dist < 7 )
-		return -1e+6;
-	if ( nearnest_opp_dist < 10 )
-		return -1e+5;
-	if ( nearnest_opp_dist > 12 )
-		return +1e+5;
-	return 0;
-}
+

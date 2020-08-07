@@ -264,6 +264,7 @@ SampleCoach::doSubstitute()
          && world().gameMode().type() != GameMode::PlayOn
          && ! world().gameMode().isPenaltyKickMode() )
     {
+        doSubstituteFouledPlayers();
         doSubstituteTiredPlayers();
 
         return;
@@ -509,6 +510,105 @@ SampleCoach::doSubstituteTiredPlayers()
 
     for ( std::vector< int >::iterator unum = tired_teammate_unum.begin();
           unum != tired_teammate_unum.end();
+          ++unum )
+    {
+        int type = getFastestType( candidates );
+        if ( type != Hetero_Unknown )
+        {
+            substituteTo( *unum, type );
+            if ( ++substitute_count >= PlayerParam::i().subsMax() )
+            {
+                // over the maximum substitution
+                break;
+            }
+        }
+    }
+}
+
+void
+SampleCoach::doSubstituteFouledPlayers()
+{
+    int substitute_count = world().ourSubstituteCount();
+
+    if ( substitute_count >= PlayerParam::i().subsMax() )
+    {
+        // over the maximum substitution
+        return;
+    }
+
+    const ServerParam & SP = ServerParam::i();
+
+    //
+    // check game time
+    //
+    const int half_time = SP.actualHalfTime();
+    const int normal_time = half_time * SP.nrNormalHalfs();
+
+    if ( world().time().cycle() < normal_time - 500
+         //|| world().time().cycle() <= half_time + 1
+         //|| world().gameMode().type() == GameMode::KickOff_
+         )
+    {
+        return;
+    }
+
+    dlog.addText( Logger::TEAM,
+                  __FILE__": consider to substitute tired teammates." );
+
+    //
+    // create candidate teamamte
+    //
+    std::vector< int > fouled_teammate_unum;
+
+    for ( std::vector< const GlobalPlayerObject * >::const_iterator
+              t = world().teammates().begin(),
+              end = world().teammates().end();
+          t != end;
+          ++t )
+    {
+        if ( (*t)->card() != NO_CARD )   //筛选拿牌球员
+        {
+            fouled_teammate_unum.push_back( (*t)->unum() );
+        }
+    }
+
+    if ( fouled_teammate_unum.empty() )
+    {
+        dlog.addText( Logger::TEAM,
+                      __FILE__": no fouled teammates." );
+        return;
+    }
+
+    //具体的挑选替换球员，和doSubstituteTiredPlayers()相同
+    // create candidate player type
+    //
+    PlayerTypePtrCont candidates;
+
+    for ( std::vector< int >::const_iterator
+              id = world().availablePlayerTypeId().begin(),
+              end = world().availablePlayerTypeId().end();
+          id != end;
+          ++id )
+    {
+        const PlayerType * param = PlayerTypeSet::i().get( *id );
+        if ( ! param )
+        {
+            std::cerr << config().teamName() << " coach: "
+                      << world().time()
+                      << " : Could not get player type. id=" << *id << std::endl;
+            continue;
+        }
+
+        candidates.push_back( param );
+    }
+
+    //
+    // try substitution
+    //
+
+
+    for ( std::vector< int >::iterator unum = fouled_teammate_unum.begin();
+          unum != fouled_teammate_unum.end();
           ++unum )
     {
         int type = getFastestType( candidates );
