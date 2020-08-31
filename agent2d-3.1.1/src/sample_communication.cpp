@@ -210,6 +210,15 @@ SampleCommunication::execute( PlayerAgent * agent )
     {
         return say_recovery;
     }
+    //守门员需要发送盯防信息的情形
+    if ( wm.gamoMode().type == GameMode::PlayOn
+		 || wm.gameMode().type == GameMode::KickIn_
+		 || wm.gameMode().type == GameMode::FreeKick_
+		 || wm.gameMode().type == GameMode::CornerKick_
+		 || wm.gameMode().type == GameMode::GoalKick_ )
+	{
+		sayMarkSystem( agent );
+	}
 
 #ifdef DEBUG_PRINT_PLAYER_RECORD
     const AudioMemory::PlayerRecord::const_iterator end = agent->world().audioMemory().playerRecord().end();
@@ -588,6 +597,35 @@ SampleCommunication::goalieSaySituation( const rcsc::PlayerAgent * agent )
     return false;
 }
 
+/*-------------------------------------------------------------------*/
+/*!
+
+ */
+bool sayMarkSystem( const rcsc::PlayerAgent * agent )
+{
+	const WorldModel & wm = agent->world();
+	//只有守门员负责发送盯防信息
+    if ( ! wm.self().goalie() )
+    {
+        return false;
+    }
+    //检查发送长度是否符合
+    const int current_len = agent->effector().getSayMessageLength();
+    const int available_len = ServerParam::i().playerSayMsgSize() - current_len;
+
+    if ( available_len < MarkMessage::slength() )
+    {
+        return false;
+    }
+    
+    agent->addSayMessage( new MarkMessage( wm.getMarkPairs() );
+    dlog.addText ( Logger::COMMUNICATION,
+                      __FILE__": (sayMarkMessage) say mark pairs" );
+               
+    return true;
+}
+    
+    
 /*-------------------------------------------------------------------*/
 /*!
 

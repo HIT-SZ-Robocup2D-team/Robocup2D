@@ -65,6 +65,7 @@
 #include <rcsc/param/cmd_line_parser.h>
 #include <rcsc/param/param_map.h>
 #include <rcsc/game_mode.h>
+#include <rcsc/geom/line_2d.h>   //线段类，用于计算盯人防守时的跑位点
 
 #include <set>
 #include <fstream>
@@ -444,6 +445,7 @@ Strategy::update( const WorldModel & wm )                               //用于
 
     updateSituation( wm );
     updatePosition( wm );
+    updateMarkingSystem( wm );  
 }
 
 /*-------------------------------------------------------------------*/
@@ -616,6 +618,9 @@ Strategy::updateSituation( const WorldModel & wm )                      //更新
 
     dlog.addText( Logger::TEAM,
                   __FILE__": Situation Normal" );
+                  
+                  
+	
 }
 
 /*-------------------------------------------------------------------*/
@@ -720,6 +725,24 @@ Strategy::updatePosition( const WorldModel & wm )                       //更新
     }
 }
 
+/*-------------------------------------------------------------------*/
+void
+Strategy::updateMarkingSystem( const WorldModel & wm )
+{
+	switch (M_current_situation) {
+		Defense_Situation:
+			if ( getMarkingUnum != -1 )
+				M_isMarker = true;
+			break;
+		Offense_Situation:
+			M_isMarker = false;
+			M_markingUnum = -1;
+			break;
+		default:
+			break;
+			
+		}
+}
 
 /*-------------------------------------------------------------------*/
 /*!
@@ -756,7 +779,7 @@ Strategy::getPositionType( const int unum ) const
 
  */
 Vector2D
-Strategy::getPosition( const int unum ) const
+Strategy::getPosition( const int unum, const rcsc::WorldModel & wm  ) const
 {
     const int number = roleNumber( unum );
 
@@ -767,7 +790,24 @@ Strategy::getPosition( const int unum ) const
                   << std::endl;
         return Vector2D::INVALIDATED;
     }
-
+	if ( M_isMarker == true )
+	{
+		for( std::vector< PlayerObject * >::iterator it = wm.opponentsFromSelf().begin();  //根据goalie说的盯防球员的号码寻找他的位置
+			 it != wm.opponentsFromSelf().end(); 
+			 it++)
+		{
+			if( it -> unum == M_markingUnum )
+				vector2D markedOppPos = it -> M_pos;
+		}
+		//if()   //盯防球员不是持球球员
+		//{
+			line2D oppToBall( markedOppPos, wm.ball().pos() );    //
+			line2D perpendicularLine(wm.M_localize.playerT.pos_);
+			return intersection(oppToBall, perpendicularLine);
+		//}
+		//else
+		//{
+	}		
     try                                              //try-catch是处理异常的语句块，这里直接视为会返回一个球员应该移动到的地方即可
     {
         return M_positions.at( number - 1 );         //=M_position[number-1]

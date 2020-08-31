@@ -700,6 +700,9 @@ WorldModel::update( const ActionEffector & act,
 #ifdef USE_VIEW_GRID_MAP
     M_view_grid_map.incrementAll();
 #endif
+	
+	
+	
 }
 
 /*-------------------------------------------------------------------*/

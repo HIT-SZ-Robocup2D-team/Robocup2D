@@ -111,6 +111,68 @@ public:
   "b<pos_vel:5>"
   the length of message == 6
  */
+class MarkMessageParser
+    : public SayMessageParser {
+private:
+
+    //! pointer to the audio memory
+    boost::shared_ptr< AudioMemory > M_memory;
+
+public:
+
+    /*!
+      \brief construct with audio memory
+      \param memory pointer to the memory
+     */
+    explicit
+    MarkMessageParser( boost::shared_ptr< AudioMemory > memory );
+
+    /*!
+      \brief get the header character.
+      \return header character.
+     */
+    static
+    char sheader() { return 'm'; }
+
+    /*!
+      \brief get the header character.
+      \return header character.
+     */
+    char header() const { return sheader(); }
+
+    /*!
+      \brief get the length of this message.
+      \return the length of encoded message
+    */
+    static
+    int slength() { return 21; }
+
+    /*!
+      \brief virtual method which analyzes audio messages.
+      \param sender sender's uniform number
+      \param dir sender's direction
+      \param msg raw audio message
+      \param current current game time
+      \retval bytes read if success
+      \retval 0 message ID is not match. other parser should be tried.
+      \retval -1 failed to parse
+    */
+    int parse( const int sender,
+               const double & dir,
+               const char * msg,
+               const GameTime & current );
+
+};
+
+/*-------------------------------------------------------------------*/
+/*!
+  \class BallMessageParser
+  \brief ball info message parser
+
+  format:
+  "b<pos_vel:5>"
+  the length of message == 6
+ */
 class BallMessageParser
     : public SayMessageParser {
 private:

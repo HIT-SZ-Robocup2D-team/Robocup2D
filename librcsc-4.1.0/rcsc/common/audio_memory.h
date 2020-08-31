@@ -39,6 +39,7 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <utility>
 
 namespace rcsc {
 
@@ -48,6 +49,18 @@ namespace rcsc {
 */
 class AudioMemory {
 public:
+
+	struct MarkSystem {
+		int sender;
+		std::vector < pair <int>, <int> > mark_pairs_;
+		
+		MarkSystem( const int sender,
+					const std::vector < pair <int>, <int> > mark_pairs )
+					:sender_( sender )
+					,mark_pairs_( mark_pairs )
+
+
+
 
     /*!
       \struct Ball
@@ -355,6 +368,9 @@ protected:
     //! last updated time
     GameTime M_time;
 
+	std::vector< MarkSystem > M_mark_system;  //得到的信息
+	GameTime M_mark_system_time;       //得到信息的时间
+	
     std::vector< Ball > M_ball; //!< heard info
     GameTime M_ball_time; //!< info heard time
 

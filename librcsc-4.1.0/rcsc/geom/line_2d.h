@@ -55,6 +55,8 @@ private:
     double M_a; //!< line fomula A, coefficient for x
     double M_b; //!< line fomula B, coefficient for y
     double M_c; //!< line fomula constant C
+    
+    //方程形式M_a x + M_b y + M_c = 0
 
     // never used
     Line2D();

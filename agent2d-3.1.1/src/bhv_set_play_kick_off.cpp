@@ -265,7 +265,7 @@ Bhv_SetPlayKickOff::doMove( PlayerAgent * agent )
 {
     const WorldModel & wm = agent->world();
 
-    Vector2D target_point = Strategy::i().getPosition( wm.self().unum() );
+    Vector2D target_point = Strategy::i().getPosition( wm.self().unum(), wm );
     target_point.x = std::min( -0.5, target_point.x );
 
     double dash_power = Bhv_SetPlay::get_set_play_dash_power( agent );

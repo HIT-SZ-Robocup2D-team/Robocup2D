@@ -542,7 +542,7 @@ SamplePlayer::doPreprocess()
     {
         dlog.addText( Logger::TEAM,
                       __FILE__": before_kick_off" );
-        Vector2D move_point =  Strategy::i().getPosition( wm.self().unum() );
+        Vector2D move_point =  Strategy::i().getPosition( wm.self().unum(), wm );
         Bhv_CustomBeforeKickOff( move_point ).execute( this );
         this->setViewAction( new View_Tactical() );
         return true;

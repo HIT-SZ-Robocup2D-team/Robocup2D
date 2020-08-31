@@ -44,17 +44,35 @@
 
 namespace rcsc {
 
+
+
+
+
+
+
+
+
+
+
+std::ostream &
+MarkMessage::printDebug( std::ostream & os ) const
+{
+    os << "[Mark]";
+    return os;
+}
+
+
 /*-------------------------------------------------------------------*/
 /*!
 
 */
 bool
-BallMessage::toStr( std::string & to ) const
+MarkMessage::toStr( std::string & to ) const
 {
     if ( (int)to.length() + slength() > ServerParam::i().playerSayMsgSize() )
     {
         dlog.addText( Logger::SENSOR,
-                      "BallMessage. over the message size : buf = %d, this = %d",
+                      "MarkMessage. over the message size : buf = %d, this = %d",
                       to.length(), slength() );
         return false;
     }
@@ -68,22 +86,17 @@ BallMessage::toStr( std::string & to ) const
          || (int)msg.length() != slength() - 1 )
     {
         std::cerr << __FILE__ << ":" << __LINE__
-                  << " ***ERROR*** BallMessage. "
+                  << " ***ERROR*** MarkMessage. "
                   << std::endl;
         dlog.addText( Logger::SENSOR,
-                      "BallMessage. error!"
-                      " pos=(%.1f %.1f) vel=(%.1f %.1f)",
-                      M_ball_pos.x, M_ball_pos.y,
-                      M_ball_vel.x, M_ball_vel.y );
+                      "MarkMessage. error!"
+					);
         return false;
     }
 
     dlog.addText( Logger::SENSOR,
-                  "BallMessage. success!"
-                  " pos=(%.1f %.1f) vel=(%.1f %.1f) -> [%s]",
-                  M_ball_pos.x, M_ball_pos.y,
-                  M_ball_vel.x, M_ball_vel.y,
-                  msg.c_str() );
+                  "MarkMessage. success!"
+                  );
 
     to += header();
     to += msg;

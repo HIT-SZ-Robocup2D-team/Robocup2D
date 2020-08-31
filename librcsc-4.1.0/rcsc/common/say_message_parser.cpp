@@ -43,8 +43,75 @@
 #include <rcsc/game_time.h>
 
 #include <cstring>
+#include <utility>
 
 namespace rcsc {
+	
+	/*-------------------------------------------------------------------*/
+/*!
+
+*/
+MarkMessageParser::MarkMessageParser( boost::shared_ptr< AudioMemory > memory )
+    : M_memory( memory )
+{
+
+}
+
+
+/*-------------------------------------------------------------------*/
+/*!
+
+*/
+int
+MarkMessageParser::parse( const int sender ,
+                          const double & ,
+                          const char * msg,
+                          const GameTime & current )
+{
+    // format:
+    //    "m<mark_pair:10>"
+    // the length of message == 21
+
+    if ( *msg != sheader() )
+    {
+        return 0;
+    }
+
+    if ( (int)std::strlen( msg ) < slength() )
+    {
+        std::cerr << "***ERROR*** MarkMessage::parse()"
+                  << " Illegal mark message [" << msg << "]"
+                  << std::endl;
+        dlog.addText( Logger::SENSOR,
+                      "MarkMessage: Illegal ball info [%s]",
+                      msg );
+        return -1;
+    }
+    ++msg;
+	std::vector < pair <int>,<int> > mark_pairs;
+	
+    if ( ! AudioCodec::i().( std::string( msg, slength() - 1 ),
+                                               &mark_pairs) )
+    {
+        std::cerr << "***ERROR*** MarkMessageParser::parse()"
+                  << " Failed to decode ball [" << msg << "]"
+                  << std::endl;
+        dlog.addText( Logger::SENSOR,
+                      "MarkMessageParser: Failed to decode Ball Info [%s]",
+                      msg );
+        return -1;
+    }
+
+    dlog.addText( Logger::SENSOR,
+                  "MarkMessageParser::parse() success! ",
+                   );
+    M_memory->setMarkSystem( mark_pairs );
+
+   
+
+    return slength();
+}
+
 
 /*-------------------------------------------------------------------*/
 /*!

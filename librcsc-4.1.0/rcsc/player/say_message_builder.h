@@ -37,6 +37,8 @@
 
 #include <string>
 #include <iostream>
+#include <utility>
+#include <vector>
 
 namespace rcsc {
 
@@ -100,6 +102,72 @@ public:
     std::ostream & printDebug( std::ostream & os ) const = 0;
 
 };
+
+/*-------------------------------------------------------------------*/
+/*!
+ \class MarkMessage
+ \brief Mark system message encoder
+ 
+ format:
+ "M<marking_pair:10>
+ the length of message = 21
+*/
+class MarkMessage
+	: public SayMessage {
+private:
+	std::vector < pair <int>, <int> > M_mark_pairs;    //盯防对子: <盯防人，被盯防人>
+	
+public:
+	
+    /*!
+      \brief construct with raw information
+      \param 
+    */
+    MarkMessage( const std::vector <pair <int>,<int>> mark_pairs)
+        : M_mark_pairs(mark_pairs)
+      { }
+
+    /*!
+      \brief get the header character of this message
+      \return header character of this message
+     */
+    char header() const
+      {
+          return MarkMessage::sheader();
+      }
+
+    /*!
+      \brief get the length of this message.
+      \return the length of encoded message
+    */
+    static
+    int slength()
+      {
+          return MarkMessage::slength();
+      }
+
+    /*!
+      \brief get the length of this message
+      \return the length of encoded message
+    */
+    int length() const
+      {
+          return slength();
+      }
+
+    /*!
+      \brief append this info to the audio message
+      \param to reference to the message string instance
+      \return result status of encoding
+    */
+    bool toStr( std::string & to ) const;
+
+    /*!
+      \brief append the debug message
+      \param os reference to the output stream
+      \return reference to the output stream
+     */
+    std::ostream & printDebug( std::ostream & os ) const;
 
 
 /*-------------------------------------------------------------------*/

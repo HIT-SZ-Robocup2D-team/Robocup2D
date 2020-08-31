@@ -351,7 +351,7 @@ Bhv_SetPlayKickIn::doMove( PlayerAgent * agent )
 {
     const WorldModel & wm = agent->world();
 
-    Vector2D target_point = Strategy::i().getPosition( wm.self().unum() );
+    Vector2D target_point = Strategy::i().getPosition( wm.self().unum(), wm );
 
     bool avoid_opponent = false;
     if ( wm.self().stamina() > ServerParam::i().staminaMax() * 0.9 )

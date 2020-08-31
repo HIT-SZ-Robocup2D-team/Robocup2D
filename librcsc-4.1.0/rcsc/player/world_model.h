@@ -47,6 +47,8 @@
 #include <boost/shared_ptr.hpp>
 
 #include <string>
+#include <vector>
+#include <utility>
 
 namespace rcsc {
 
@@ -60,6 +62,7 @@ class PlayerPredicate;
 class PlayerType;
 class PenaltyKickState;
 class VisualSensor;
+class strategy
 
 /*!
   \class WorldModel
@@ -74,8 +77,12 @@ public:
 
     static const std::size_t MAX_RECORD; //!< max record size
     static const double DIR_STEP; //!< the angle steps for dir confidence
+    
+    
 
 private:
+
+	
 
     Localization * M_localize; //!< localization module
     InterceptTable * M_intercept_table; //!< interception info table
@@ -87,6 +94,7 @@ private:
     SideID M_our_side; //!< our side ID
 
     std::string M_opponent_teamname; //!< opponent teamname
+    
 
     //////////////////////////////////////////////////
     // timer & mode
@@ -178,12 +186,17 @@ private:
     ViewGridMap M_view_grid_map;
 
     //////////////////////////////////////////////////
+    // mark system
+    std::vector <pair <int>, <int> > M_mark_pairs;
+    //////////////////////////////////////////////////
 
     //! not used
     WorldModel( const WorldModel & );
     //! not used
     WorldModel & operator=( const WorldModel & );
-
+    
+    /////////////////////////////////////////////////
+  
 public:
     /*!
       \brief initialize member variables
@@ -230,6 +243,8 @@ public:
       {
           return *M_audio_memory;
       }
+      
+     std::vector <pair <int>,<int> > getMarkPairs return M_mark_pairs;
 
     /*!
       \brief init team info
@@ -286,6 +301,12 @@ public:
      */
     void setPenaltyKickTaker( const SideID side,
                               const int unum );
+                              
+	bool isMarker() return M_isMarker;
+	
+	int markingUnum() return M_markingUnum;
+                              
+   
 
     // update stuff
 private:
@@ -298,6 +319,8 @@ private:
     */
     void update( const ActionEffector & act,
                  const GameTime & current );
+    bool isMarker() {return isMarker};      //获取盯防情况
+     
 public:
     /*!
       \brief update by sense_body.

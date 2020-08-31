@@ -47,6 +47,7 @@
 namespace rcsc {                                                        //两个基本类
 class CmdLineParser;
 class WorldModel;
+class line2D;
 }
 
 enum PositionType {                                                     //三种position
@@ -127,7 +128,7 @@ private:
 
 
     // situation type
-    SituationType M_current_situation;
+   SituationType M_current_situation;
 
     // role assignment
     std::vector< int > M_role_number;
@@ -138,6 +139,10 @@ private:
 
     // private for singleton
     Strategy();
+    
+    //marking system in defense
+    bool M_isMarker;        //标记自己是否是盯防者
+    int M_markingUnum;       //盯防球员的号码
 
     // not used
     Strategy( const Strategy & );
@@ -190,13 +195,15 @@ public:
     SoccerRole::Ptr createRole( const int unum,                         //给传入一个球员的num，为这个球员创造role
                                 const rcsc::WorldModel & wm ) const;
     PositionType getPositionType( const int unum ) const;               //根据球员号码判断他是在side还是center
-    rcsc::Vector2D getPosition( const int unum ) const;                 //根据球员号码获取球员应该处于的位置
+    rcsc::Vector2D getPosition( const int unum, const rcsc::WorldModel & wm  ) const;                 //根据球员号码获取球员应该处于的位置
 
 
 private:
     void updateSituation( const rcsc::WorldModel & wm );                //根据worldoMdel更新time和gamemode
     // update the current position table
     void updatePosition( const rcsc::WorldModel & wm );                 //根据worldmodel更新位置，包括球和球员
+    
+    void updateMarkingSystem(const rcsc::WorldModel & wm );             //根据worldmodle更新自己的盯防系统
 
     rcsc::Formation::Ptr readFormation( const std::string & filepath ); //通过文件路径来读取阵型文件
     rcsc::Formation::Ptr createFormation( const std::string & type_name ) const;  //根据传入的FormationTypeName创造formation指针，并赋值，返回该指针

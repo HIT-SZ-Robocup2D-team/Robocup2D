@@ -28,6 +28,7 @@
 #define AGENT2D_ROLE_GOALIE_H
 
 #include <rcsc/game_time.h>
+#include <vector>
 
 #include "soccer_role.h"
 
@@ -38,6 +39,7 @@ private:
 public:
 
     static const std::string NAME;
+    typedef std::vector <std::vector <double>> doubleMatrix;
 
     RoleGoalie()
       { }
@@ -64,10 +66,14 @@ public:
           SoccerRole::Ptr ptr( new RoleGoalie() );
           return ptr;
       }
+      
+   
 
 private:
     void doKick( rcsc::PlayerAgent * agent );
     void doMove( rcsc::PlayerAgent * agent );
+    
+   void findMax( const std::vector <std:vector <double> > & vec, int row, int length, std::vector <int> & maxLoc );
 };
 
 

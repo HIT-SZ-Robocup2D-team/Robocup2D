@@ -91,6 +91,8 @@ private:
 
     bool sayStamina( rcsc::PlayerAgent * agent );
     bool sayRecovery( rcsc::PlayerAgent * agent );
+    
+    bool sayMarkSystem( rcsc::PlayerAgent * agent );                   //守门员调用发送盯防指令
 
     void attentiontoSomeone( rcsc::PlayerAgent * agent );
 };

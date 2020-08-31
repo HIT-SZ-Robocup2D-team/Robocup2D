@@ -513,7 +513,7 @@ Bhv_SetPlayIndirectFreeKick::doOffenseMove( PlayerAgent * agent )
 {
     const WorldModel & wm = agent->world();
 
-    Vector2D target_point = Strategy::i().getPosition( wm.self().unum() );
+    Vector2D target_point = Strategy::i().getPosition( wm.self().unum(), wm );
     target_point.x = std::min( wm.offsideLineX() - 1.0, target_point.x );
 
     double nearest_dist = 1000.0;
@@ -574,7 +574,7 @@ Bhv_SetPlayIndirectFreeKick::doDefenseMove( PlayerAgent * agent )
     const ServerParam & SP = ServerParam::i();
     const WorldModel & wm = agent->world();
 
-    Vector2D target_point = Strategy::i().getPosition( wm.self().unum() );
+    Vector2D target_point = Strategy::i().getPosition( wm.self().unum(), wm );
     Vector2D adjusted_point = get_avoid_circle_point( wm, target_point );
 
     dlog.addText( Logger::TEAM,

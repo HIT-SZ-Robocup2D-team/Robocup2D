@@ -331,7 +331,7 @@ Bhv_SetPlayFreeKick::doMove( PlayerAgent * agent )
     dlog.addText( Logger::TEAM,
                   __FILE__": (doMove)" );
 
-    Vector2D target_point = Strategy::i().getPosition( wm.self().unum() );
+    Vector2D target_point = Strategy::i().getPosition( wm.self().unum(), wm );
 
     if ( wm.setplayCount() > 0
          && wm.self().stamina() > ServerParam::i().staminaMax() * 0.9 )
