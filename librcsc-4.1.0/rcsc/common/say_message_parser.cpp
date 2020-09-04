@@ -64,7 +64,7 @@ MarkMessageParser::MarkMessageParser( boost::shared_ptr< AudioMemory > memory )
 */
 int
 MarkMessageParser::parse( const int sender ,
-                          const double & ,
+                          const double & dir,
                           const char * msg,
                           const GameTime & current )
 {
@@ -83,7 +83,7 @@ MarkMessageParser::parse( const int sender ,
                   << " Illegal mark message [" << msg << "]"
                   << std::endl;
         dlog.addText( Logger::SENSOR,
-                      "MarkMessage: Illegal ball info [%s]",
+                      "MarkMessage: Illegal markInfo",
                       msg );
         return -1;
     }
@@ -94,10 +94,10 @@ MarkMessageParser::parse( const int sender ,
                                                &mark_pairs) )
     {
         std::cerr << "***ERROR*** MarkMessageParser::parse()"
-                  << " Failed to decode ball [" << msg << "]"
+                  << " Failed to decode pairs [" << msg << "]"
                   << std::endl;
         dlog.addText( Logger::SENSOR,
-                      "MarkMessageParser: Failed to decode Ball Info [%s]",
+                      "MarkMessageParser: Failed to decode pairs info [%s]",
                       msg );
         return -1;
     }
@@ -105,9 +105,7 @@ MarkMessageParser::parse( const int sender ,
     dlog.addText( Logger::SENSOR,
                   "MarkMessageParser::parse() success! ",
                    );
-    M_memory->setMarkSystem( mark_pairs );
-
-   
+    M_memory->setMarkSystem( sender, mark_pairs, current );
 
     return slength();
 }

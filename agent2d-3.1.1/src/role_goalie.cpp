@@ -162,7 +162,7 @@ RoleGoalie::execute( PlayerAgent * agent )
 	doubleMatrix *distance = new doubleMatrix; 
 	int height =  markingTeammate.size();
 	int width =  markedOpp.size();
-	std::vector <pair <int>, <int> > markPairs = agent->world().getMarkPairs;
+	std::vector <pair <int>, <int> > & markPairs = agent->world().getMarkPairs;
 	distance->resize(height);    //设置数组行数
 	for ( int i = 0; i < height; i++ )	//逐行设置列数
 		(*distance)[i].resize(width);      

@@ -790,24 +790,27 @@ Strategy::getPosition( const int unum, const rcsc::WorldModel & wm  ) const
                   << std::endl;
         return Vector2D::INVALIDATED;
     }
-	if ( M_isMarker == true )
+    
+    int M_markingUnum =  wm.markingUnum();
+	if ( M_markingUnum != 0 && M_markingUnum == Defense_Situation)                             //有人可防且处于防守状态
 	{
 		for( std::vector< PlayerObject * >::iterator it = wm.opponentsFromSelf().begin();  //根据goalie说的盯防球员的号码寻找他的位置
 			 it != wm.opponentsFromSelf().end(); 
 			 it++)
 		{
 			if( it -> unum == M_markingUnum )
-				vector2D markedOppPos = it -> M_pos;
+				vector2D markingOppPos = it -> M_pos;
 		}
 		//if()   //盯防球员不是持球球员
 		//{
-			line2D oppToBall( markedOppPos, wm.ball().pos() );    //
+			line2D oppToBall( markingOppPos, wm.ball().pos() );    //
 			line2D perpendicularLine(wm.M_localize.playerT.pos_);
 			return intersection(oppToBall, perpendicularLine);
 		//}
 		//else
 		//{
-	}		
+	}
+			
     try                                              //try-catch是处理异常的语句块，这里直接视为会返回一个球员应该移动到的地方即可
     {
         return M_positions.at( number - 1 );         //=M_position[number-1]

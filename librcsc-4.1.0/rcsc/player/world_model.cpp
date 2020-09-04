@@ -294,6 +294,14 @@ WorldModel::WorldModel()
         M_known_teammates[i] = static_cast< AbstractPlayerObject * >( 0 );
         M_known_opponents[i] = static_cast< AbstractPlayerObject * >( 0 );
     }
+    
+    //初始化mark_pairs，守门员不需要，其余球员按顺序存在mark_pairs中
+    //初始状态下没有盯防人
+    for( int i = 0; i < 10; i++ )
+    {
+		M_mark_pairs[i].first() = i+1;
+		M_mark_pairs[i].second() = 0;
+	}
 }
 
 /*-------------------------------------------------------------------*/
@@ -1246,6 +1254,38 @@ WorldModel::updateGameMode( const GameMode & game_mode,
     }
 }
 
+
+void
+WorldModel::updateMarkSystemByHear()
+{
+	//确认时间
+	if ( M_fullstate_time == this->time() )
+    {
+        return;
+    }
+
+    if ( M_audio_memory->markSystemTime() != this->time()
+         || M_audio_memory->markSystem().empty() )
+    {
+        return;
+    }
+    //更新worldmodel中的mark_pairs
+    M_mark_pairs = audioMemory->markSystem().end().mark_pairs_;
+    for( int i = 0; i < 10; i++ )
+    {
+		if( M_mark_pairs[i].first() == M_self.unum_ )
+		{
+			M_marking_unum = M_mark_pairs[i].second();
+			break;
+		}
+	}
+	if (i == 10 && ourGoalieUnum() != M_self.unum_)   //如果没有找到自己的盯防对象同时也不是goalie，就出问题了
+		dlog.addText( Logger::WORLD,
+                      __FILE__" (updateMarkSystemByHear) can not find self marking unum."
+                      );
+    
+    return;
+
 /*-------------------------------------------------------------------*/
 /*!
 
@@ -1711,6 +1751,7 @@ WorldModel::updateJustBeforeDecision( const ActionEffector & act,
     updateBallByHear( act );
     updateGoalieByHear();
     updatePlayerByHear();
+    updateMarkSystemByHear();
 
     updateCollision();
 

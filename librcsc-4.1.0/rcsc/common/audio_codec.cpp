@@ -44,6 +44,8 @@
 #include <algorithm>
 #include <limits>
 
+#include <vector>
+#include <utility>
 namespace rcsc {
 
 const double AudioCodec::ERROR_VALUE = std::numeric_limits< double >::max();
@@ -92,6 +94,84 @@ AudioCodec::i()
     static AudioCodec s_instance;
 
     return s_instance;
+}
+
+/*-------------------------------------------------------------------*/
+/*!
+ 将markPairs编码成int::64
+*/
+boost::int64_t
+encodePairsToInt64( const std::vector< pair <int>, <int> > & pairs)
+{
+	boost::int64_t ival;
+	for( int i = 0; i < 10; i++)
+	{
+		ival += pairs[i].second();
+		ival <<= 5;
+	}
+	return ival;
+}
+
+/*-------------------------------------------------------------------*/
+/*!
+将Pairs转变为str用于发送
+*/
+bool encodePairsToStr( const std::vector< pair <int>, <int> > & pairs,
+						 std::string & msg )
+{
+	boost::int64_t ival = encodePairsToInt64( pairs );
+	if( encodeInt64ToStr( ival, 10, msg) )
+		return true;
+	std::cerr << __FILE__ << ": " << __LINE__
+                  << " ***ERROR*** AudioCodec::encodePairsToStr."
+                  << " Fail to call encodeInt64ToStr()"
+                  << std::endl;
+     return false;
+}
+
+/*-------------------------------------------------------------------*/
+/*!
+将Int64解码为pairs
+*/
+
+bool decodeInt64ToPairs( boost::int64_t rval, 
+						 std::vector< pair <int>, <int> > & pairs )
+{
+	for( int i = 9; i >= 0; i-- )
+	{
+		pairs[i].second() = rval >>= 5; 
+	}
+	return true;
+}
+							 
+*-------------------------------------------------------------------*/
+/*!
+将str解码为pairs
+*/
+bool decodeStrToPairs( std::string & msg,
+					   std::vector< pair <int>, <int> > & pairs )
+{
+	boost::int64_t rval;
+	if( decodeStrToInt64( msg, rval ) )
+	{
+		if( decodeInt64ToPairs( rval, pairs ))
+			return true
+		else
+		{
+			std::cerr << __FILE__ << ": " << __LINE__
+                  << " ***ERROR*** AudioCodec::decodeStrToPairs."
+                  << " Failed to call decodeInt64ToPairs()"
+                  << std::endl;
+		}
+	}
+	else
+	{
+		std::cerr << __FILE__ << ": " << __LINE__
+                  << " ***ERROR*** AudioCodec::decodeStrToPairs."
+                  << " Failed to call decodeStrToInt64()"
+                  << std::endl;
+        return false
+	}
 }
 
 /*-------------------------------------------------------------------*/

@@ -39,6 +39,7 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <utility>
 #include <cmath>
 
 namespace rcsc {
@@ -137,6 +138,19 @@ public:
 
 private:
 
+    //将盯防对子编码成string
+    bool encodePairsToStr21( const std::vector< pair <int>, <int> > & pairs,
+								std::string & msg );
+	boost::int 64_t encodePairsToInt64( const std::vector< pair <int>, <int> > & pairs) const
+	//将string解码成盯防对子
+	bool decodeStr21ToPairs( std::string & msg,
+							 std::vector< pair <int>, <int> > & pairs );
+    
+    
+    
+    
+    
+    
     /*!
       \brief encode position to 18 bits info (x:9bits y:9bits)
       \param pos position to be converted
@@ -208,6 +222,19 @@ public:
           return M_int_to_char_map;
       }
 
+	boost::int64_t
+	encodePairsToInt64( const std::vector< pair <int>, <int> > & pairs);
+	
+	bool decodeInt64ToPairs( boost::int64_t rval, 
+							 std::vector< pair <int>, <int> > & pairs );
+
+
+	bool encodePairsToStr( const std::vector< pair <int>, <int> >  & pairs,
+						 std::string & msg )
+
+
+	bool decodeStrToPairs( std::string & msg,
+					   std::vector< pair <int>, <int> > & pairs )
     /*!
       \brief encode decimal (64bit) integer to the encoded string.
       \param ival input value

@@ -145,7 +145,7 @@ public:
       \return the length of encoded message
     */
     static
-    int slength() { return 21; }
+    int slength() { return 11; }
 
     /*!
       \brief virtual method which analyzes audio messages.

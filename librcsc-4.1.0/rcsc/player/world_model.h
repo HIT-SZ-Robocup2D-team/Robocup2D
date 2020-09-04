@@ -82,7 +82,7 @@ public:
 
 private:
 
-	
+	int 
 
     Localization * M_localize; //!< localization module
     InterceptTable * M_intercept_table; //!< interception info table
@@ -188,6 +188,7 @@ private:
     //////////////////////////////////////////////////
     // mark system
     std::vector <pair <int>, <int> > M_mark_pairs;
+    int M_marking_unum;
     //////////////////////////////////////////////////
 
     //! not used
@@ -219,6 +220,11 @@ public:
       \param is_valid value to be set
     */
     void setValid( bool is_valid );
+    
+    //mark system
+    std::vector <pair <int>,<int> > & getMarkPairs return M_mark_pairs;
+     
+    int markingUnum() return M_mark_unum;
 
     /*!
       \brief get intercept table
@@ -244,7 +250,7 @@ public:
           return *M_audio_memory;
       }
       
-     std::vector <pair <int>,<int> > getMarkPairs return M_mark_pairs;
+     
 
     /*!
       \brief init team info
@@ -302,9 +308,8 @@ public:
     void setPenaltyKickTaker( const SideID side,
                               const int unum );
                               
-	bool isMarker() return M_isMarker;
 	
-	int markingUnum() return M_markingUnum;
+
                               
    
 
@@ -319,7 +324,6 @@ private:
     */
     void update( const ActionEffector & act,
                  const GameTime & current );
-    bool isMarker() {return isMarker};      //获取盯防情况
      
 public:
     /*!
@@ -508,6 +512,9 @@ private:
       \param varea seen view area info
     */
     void updateDirCount( const ViewArea & varea );
+    
+    
+    updateMarkSystemByHear();
 
     /*!
       \brief update ball by heard info

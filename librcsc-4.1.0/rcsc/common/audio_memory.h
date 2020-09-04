@@ -55,13 +55,9 @@ public:
 		std::vector < pair <int>, <int> > mark_pairs_;
 		
 		MarkSystem( const int sender,
-					const std::vector < pair <int>, <int> > mark_pairs )
+					const std::vector < pair <int>, <int> > & mark_pairs )
 					:sender_( sender )
 					,mark_pairs_( mark_pairs )
-
-
-
-
     /*!
       \struct Ball
       \brief heard ball info
@@ -447,6 +443,18 @@ public:
       {
           return M_time;
       }
+      
+      const
+      std::vector< MarkSystem > & markSystem() const
+      {
+		  return M_mark_system;
+	  }
+	  
+	  const
+	  GameTime & markSystemTime() const
+	  {
+		  return M_mark_system_time;
+	  }
 
     /*!
       \brief get heard ball info
@@ -756,7 +764,11 @@ public:
 
 
     // setter methods
-
+	
+	virtue
+	void setMarkSystem( const int sender,
+						const std::vector < pair <int>, <int> > & mark_pairs
+						const GameTime & current );
     /*!
       \brief set heard ball status
       \param sender sender's uniform number
