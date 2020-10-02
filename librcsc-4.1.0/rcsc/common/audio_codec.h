@@ -137,19 +137,6 @@ public:
     AudioCodec & i();
 
 private:
-
-    //将盯防对子编码成string
-    bool encodePairsToStr21( const std::vector< pair <int>, <int> > & pairs,
-								std::string & msg );
-	boost::int 64_t encodePairsToInt64( const std::vector< pair <int>, <int> > & pairs) const
-	//将string解码成盯防对子
-	bool decodeStr21ToPairs( std::string & msg,
-							 std::vector< pair <int>, <int> > & pairs );
-    
-    
-    
-    
-    
     
     /*!
       \brief encode position to 18 bits info (x:9bits y:9bits)
@@ -222,19 +209,20 @@ public:
           return M_int_to_char_map;
       }
 
+
 	boost::int64_t
-	encodePairsToInt64( const std::vector< pair <int>, <int> > & pairs);
-	
+	encodePairsToInt64( const std::vector< std::pair <int, int> > & pairs) const;
+
 	bool decodeInt64ToPairs( boost::int64_t rval, 
-							 std::vector< pair <int>, <int> > & pairs );
+							 std::vector< std::pair <int, int> > & pairs ) const;
 
+	//将盯防对子编码成string
+	bool encodePairsToStr( const std::vector< std::pair <int, int> >  & pairs,
+						   std::string & msg )const;
 
-	bool encodePairsToStr( const std::vector< pair <int>, <int> >  & pairs,
-						 std::string & msg )
-
-
-	bool decodeStrToPairs( std::string & msg,
-					   std::vector< pair <int>, <int> > & pairs )
+	//将string解码成盯防对子
+	bool decodeStrToPairs( const std::string & msg,
+						   std::vector< std::pair <int, int> > & pairs ) const;
     /*!
       \brief encode decimal (64bit) integer to the encoded string.
       \param ival input value

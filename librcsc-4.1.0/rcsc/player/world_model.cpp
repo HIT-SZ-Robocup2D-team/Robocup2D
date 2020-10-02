@@ -299,8 +299,8 @@ WorldModel::WorldModel()
     //初始状态下没有盯防人
     for( int i = 0; i < 10; i++ )
     {
-		M_mark_pairs[i].first() = i+1;
-		M_mark_pairs[i].second() = 0;
+		M_mark_pairs[i].first = i+1;
+		M_mark_pairs[i].second = 0;
 	}
 }
 
@@ -1270,21 +1270,22 @@ WorldModel::updateMarkSystemByHear()
         return;
     }
     //更新worldmodel中的mark_pairs
-    M_mark_pairs = audioMemory->markSystem().end().mark_pairs_;
+    M_mark_pairs = M_audio_memory->markSystem().end()->mark_pairs_;
     for( int i = 0; i < 10; i++ )
     {
-		if( M_mark_pairs[i].first() == M_self.unum_ )
+		if( M_mark_pairs[i].first == M_self.unum() )
 		{
-			M_marking_unum = M_mark_pairs[i].second();
-			break;
+			M_mark_unum = M_mark_pairs[i].second;
+			return;
 		}
 	}
-	if (i == 10 && ourGoalieUnum() != M_self.unum_)   //如果没有找到自己的盯防对象同时也不是goalie，就出问题了
+	if (ourGoalieUnum() != M_self.unum())   //如果没有找到自己的盯防对象同时也不是goalie，就出问题了
 		dlog.addText( Logger::WORLD,
                       __FILE__" (updateMarkSystemByHear) can not find self marking unum."
                       );
     
     return;
+}
 
 /*-------------------------------------------------------------------*/
 /*!

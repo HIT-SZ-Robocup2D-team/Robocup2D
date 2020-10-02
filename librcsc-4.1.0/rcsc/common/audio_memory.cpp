@@ -67,13 +67,13 @@ AudioMemory::AudioMemory()
 
 void
 AudioMemory::setMarkSystem( const int sender,
-							const std::vector < pair <int>, <int> > & mark_pairs,
+							const std::vector < std::pair <int, int> > & mark_pairs,
 							const GameTime & current )
 {
 	dlog.addText( Logger::WORLD,
                   __FILE__": set heard mark system: sender=%d "
 					,
-                  sender,
+                  sender
                   );
 
     if ( M_mark_system_time != current )
@@ -81,7 +81,7 @@ AudioMemory::setMarkSystem( const int sender,
         M_mark_system.clear();
     }
 
-    M_mark_system.push_back(  MarkSystem( sender, mark_pairs_ );
+    M_mark_system.push_back( MarkSystem( sender, mark_pairs ) );
     M_mark_system_time = current;
 
     M_time = current;

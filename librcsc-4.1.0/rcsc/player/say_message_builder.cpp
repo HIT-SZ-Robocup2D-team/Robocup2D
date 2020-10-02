@@ -46,14 +46,6 @@ namespace rcsc {
 
 
 
-
-
-
-
-
-
-
-
 std::ostream &
 MarkMessage::printDebug( std::ostream & os ) const
 {
@@ -80,7 +72,7 @@ MarkMessage::toStr( std::string & to ) const
     std::string msg;
     msg.reserve( slength() - 1 );
 
-    if ( ! AudioCodec::i().encodePairsToStr（ M_mark_pairs, msg )
+    if ( ! (AudioCodec::i().encodePairsToStr( M_mark_pairs, msg ))
          || (int)msg.length() != slength() - 1 )
     {
         std::cerr << __FILE__ << ":" << __LINE__

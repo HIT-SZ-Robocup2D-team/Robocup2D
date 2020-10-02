@@ -115,7 +115,7 @@ public:
 class MarkMessage
 	: public SayMessage {
 private:
-	std::vector < pair <int>, <int> > M_mark_pairs;    //盯防对子: <盯防人，被盯防人>
+	std::vector < std::pair <int, int> > M_mark_pairs;    //盯防对子: <盯防人，被盯防人>
 	
 public:
 	
@@ -123,7 +123,7 @@ public:
       \brief construct with raw information
       \param 
     */
-    MarkMessage( const std::vector <pair <int>,<int>> mark_pairs)
+    MarkMessage( const std::vector <std::pair <int, int> > & mark_pairs)
         : M_mark_pairs(mark_pairs)
       { }
 
@@ -133,7 +133,7 @@ public:
      */
     char header() const
       {
-          return MarkMessage::sheader();
+          return MarkMessageParser::sheader();
       }
 
     /*!
@@ -168,6 +168,7 @@ public:
       \return reference to the output stream
      */
     std::ostream & printDebug( std::ostream & os ) const;
+};
 
 
 /*-------------------------------------------------------------------*/
@@ -1678,6 +1679,6 @@ public:
 
 };
 
-}
+};
 
 #endif

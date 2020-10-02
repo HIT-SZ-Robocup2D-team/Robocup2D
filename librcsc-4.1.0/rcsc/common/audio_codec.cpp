@@ -101,12 +101,12 @@ AudioCodec::i()
  将markPairs编码成int::64
 */
 boost::int64_t
-encodePairsToInt64( const std::vector< pair <int>, <int> > & pairs)
+AudioCodec::encodePairsToInt64( const std::vector< std::pair <int, int> > & pairs) const
 {
-	boost::int64_t ival;
+	boost::int64_t ival = 0;
 	for( int i = 0; i < 10; i++)
 	{
-		ival += pairs[i].second();
+		ival += pairs[i].second;
 		ival <<= 5;
 	}
 	return ival;
@@ -116,8 +116,9 @@ encodePairsToInt64( const std::vector< pair <int>, <int> > & pairs)
 /*!
 将Pairs转变为str用于发送
 */
-bool encodePairsToStr( const std::vector< pair <int>, <int> > & pairs,
-						 std::string & msg )
+bool
+AudioCodec::encodePairsToStr( const std::vector< std::pair <int, int> > & pairs,
+							  std::string & msg )const
 {
 	boost::int64_t ival = encodePairsToInt64( pairs );
 	if( encodeInt64ToStr( ival, 10, msg) )
@@ -134,34 +135,37 @@ bool encodePairsToStr( const std::vector< pair <int>, <int> > & pairs,
 将Int64解码为pairs
 */
 
-bool decodeInt64ToPairs( boost::int64_t rval, 
-						 std::vector< pair <int>, <int> > & pairs )
+bool
+AudioCodec::decodeInt64ToPairs( boost::int64_t rval, 
+								std::vector< std::pair <int, int> > & pairs ) const
 {
 	for( int i = 9; i >= 0; i-- )
 	{
-		pairs[i].second() = rval >>= 5; 
+		pairs[i].second = rval >>= 5; 
 	}
 	return true;
 }
 							 
-*-------------------------------------------------------------------*/
+/*-------------------------------------------------------------------*/
 /*!
 将str解码为pairs
 */
-bool decodeStrToPairs( std::string & msg,
-					   std::vector< pair <int>, <int> > & pairs )
+bool 
+AudioCodec::decodeStrToPairs( const std::string & msg,
+							  std::vector< std::pair <int, int> > & pairs ) const
 {
 	boost::int64_t rval;
-	if( decodeStrToInt64( msg, rval ) )
+	if( decodeStrToInt64( msg, &rval ) )
 	{
 		if( decodeInt64ToPairs( rval, pairs ))
-			return true
+			return true;
 		else
 		{
 			std::cerr << __FILE__ << ": " << __LINE__
                   << " ***ERROR*** AudioCodec::decodeStrToPairs."
                   << " Failed to call decodeInt64ToPairs()"
                   << std::endl;
+			return false;
 		}
 	}
 	else
@@ -170,7 +174,7 @@ bool decodeStrToPairs( std::string & msg,
                   << " ***ERROR*** AudioCodec::decodeStrToPairs."
                   << " Failed to call decodeStrToInt64()"
                   << std::endl;
-        return false
+        return false;
 	}
 }
 

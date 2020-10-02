@@ -88,10 +88,9 @@ MarkMessageParser::parse( const int sender ,
         return -1;
     }
     ++msg;
-	std::vector < pair <int>,<int> > mark_pairs;
+	std::vector < std::pair <int, int> > mark_pairs;
 	
-    if ( ! AudioCodec::i().( std::string( msg, slength() - 1 ),
-                                               &mark_pairs) )
+    if ( ! AudioCodec::i().decodeStrToPairs( std::string(msg, 21), mark_pairs) )
     {
         std::cerr << "***ERROR*** MarkMessageParser::parse()"
                   << " Failed to decode pairs [" << msg << "]"
@@ -103,7 +102,7 @@ MarkMessageParser::parse( const int sender ,
     }
 
     dlog.addText( Logger::SENSOR,
-                  "MarkMessageParser::parse() success! ",
+                  "MarkMessageParser::parse() success! "
                    );
     M_memory->setMarkSystem( sender, mark_pairs, current );
 

@@ -51,13 +51,15 @@ class AudioMemory {
 public:
 
 	struct MarkSystem {
-		int sender;
-		std::vector < pair <int>, <int> > mark_pairs_;
+		int sender_;
+		std::vector < std::pair <int, int> > mark_pairs_;
 		
 		MarkSystem( const int sender,
-					const std::vector < pair <int>, <int> > & mark_pairs )
+					const std::vector < std::pair <int, int> > & mark_pairs )
 					:sender_( sender )
 					,mark_pairs_( mark_pairs )
+		{ }
+	};
     /*!
       \struct Ball
       \brief heard ball info
@@ -765,9 +767,9 @@ public:
 
     // setter methods
 	
-	virtue
+	virtual
 	void setMarkSystem( const int sender,
-						const std::vector < pair <int>, <int> > & mark_pairs
+						const std::vector < std::pair <int, int> > & mark_pairs,
 						const GameTime & current );
     /*!
       \brief set heard ball status

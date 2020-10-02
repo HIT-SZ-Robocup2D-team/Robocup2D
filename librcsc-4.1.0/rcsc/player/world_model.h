@@ -62,7 +62,7 @@ class PlayerPredicate;
 class PlayerType;
 class PenaltyKickState;
 class VisualSensor;
-class strategy
+class strategy;
 
 /*!
   \class WorldModel
@@ -82,7 +82,7 @@ public:
 
 private:
 
-	int 
+
 
     Localization * M_localize; //!< localization module
     InterceptTable * M_intercept_table; //!< interception info table
@@ -187,8 +187,8 @@ private:
 
     //////////////////////////////////////////////////
     // mark system
-    std::vector <pair <int>, <int> > M_mark_pairs;
-    int M_marking_unum;
+    std::vector <std::pair <int, int> > M_mark_pairs;
+    int M_mark_unum;
     //////////////////////////////////////////////////
 
     //! not used
@@ -222,9 +222,15 @@ public:
     void setValid( bool is_valid );
     
     //mark system
-    std::vector <pair <int>,<int> > & getMarkPairs return M_mark_pairs;
+    std::vector <std::pair <int, int> > & getMarkPairs() 
+    { 
+		return M_mark_pairs; 
+	};
      
-    int markingUnum() return M_mark_unum;
+    int markingUnum() 
+    {
+		return M_mark_unum;
+	};
 
     /*!
       \brief get intercept table
@@ -248,7 +254,7 @@ public:
     AudioMemory & audioMemory() const
       {
           return *M_audio_memory;
-      }
+      };
       
      
 
@@ -307,11 +313,7 @@ public:
      */
     void setPenaltyKickTaker( const SideID side,
                               const int unum );
-                              
-	
-
-                              
-   
+      
 
     // update stuff
 private:
@@ -381,7 +383,7 @@ public:
     void setTrainingTime( const GameTime & t )
       {
           M_training_time = t;
-      }
+      };
 
     /*!
       \brief update self view move
@@ -514,7 +516,7 @@ private:
     void updateDirCount( const ViewArea & varea );
     
     
-    updateMarkSystemByHear();
+    void updateMarkSystemByHear();
 
     /*!
       \brief update ball by heard info
@@ -1472,6 +1474,6 @@ public:
 
 };
 
-}
+};
 
 #endif
