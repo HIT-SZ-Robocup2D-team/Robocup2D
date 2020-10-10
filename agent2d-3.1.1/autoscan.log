@@ -1,0 +1,3 @@
+autoscan: warning: missing AC_CHECK_FUNCS([rint]) wanted by: 
+	src/chain_action/cross_generator.cpp:203
+	src/chain_action/strict_check_pass_generator.cpp:277
