@@ -82,6 +82,10 @@ public:
     static const std::string SETPLAY_OUR_FORMATION_CONF;
     static const std::string INDIRECT_FREEKICK_OPP_FORMATION_CONF;
     static const std::string INDIRECT_FREEKICK_OUR_FORMATION_CONF;
+    static const std::string AfterGoal_Celebrate_1_CONF;
+    static const std::string AfterGoal_Celebrate_2_CONF;
+    static const std::string AfterGoal_Celebrate_3_CONF;
+    
 
     enum BallArea {
         BA_CrossBlock, BA_DribbleBlock, BA_DribbleAttack, BA_Cross,     //dribble带球盘球
@@ -123,6 +127,10 @@ private:
     rcsc::Formation::Ptr M_setplay_our_formation;
     rcsc::Formation::Ptr M_indirect_freekick_opp_formation;
     rcsc::Formation::Ptr M_indirect_freekick_our_formation;
+    
+    rcsc::Formation::Ptr M_after_goal_celebrate_1_formation;
+    rcsc::Formation::Ptr M_after_goal_celebrate_2_formation;
+    rcsc::Formation::Ptr M_after_goal_celebrate_3_formation;
 
 
     int M_goalie_unum;

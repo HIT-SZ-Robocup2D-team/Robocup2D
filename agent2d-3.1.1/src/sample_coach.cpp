@@ -180,7 +180,7 @@ SampleCoach::initImpl( CmdLineParser & cmd_parser )
     {
         if ( config().teamGraphicFile().empty() )
         {
-            M_team_graphic.createXpmTiles( team_logo_xpm );
+            M_team_graphic.createXpmTiles( logo_xpm );
         }
         else
         {

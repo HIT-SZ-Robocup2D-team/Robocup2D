@@ -88,6 +88,9 @@ const std::string Strategy::SETPLAY_OPP_FORMATION_CONF = "setplay-opp-formation.
 const std::string Strategy::SETPLAY_OUR_FORMATION_CONF = "setplay-our-formation.conf";
 const std::string Strategy::INDIRECT_FREEKICK_OPP_FORMATION_CONF = "indirect-freekick-opp-formation.conf";
 const std::string Strategy::INDIRECT_FREEKICK_OUR_FORMATION_CONF = "indirect-freekick-our-formation.conf";
+const std::string Strategy::AfterGoal_Celebrate_1_CONF = "H.conf";
+const std::string Strategy::AfterGoal_Celebrate_2_CONF = "I.conf";
+const std::string Strategy::AfterGoal_Celebrate_3_CONF = "T.conf";
 
 
 /*-------------------------------------------------------------------*/
@@ -289,7 +292,27 @@ Strategy::read( const std::string & formation_dir )
         std::cerr << "Failed to read indirect freekick our formation" << std::endl;
         return false;
     }
-
+	
+	M_after_goal_celebrate_1_formation = readFormation( configpath + AfterGoal_Celebrate_1_CONF );
+    if ( ! M_after_goal_celebrate_1_formation )
+    {
+        std::cerr << "Failed to read celebrate_ 1 formation" << std::endl;
+        return false;
+    }
+    
+    M_after_goal_celebrate_2_formation = readFormation( configpath + AfterGoal_Celebrate_2_CONF );
+    if ( ! M_after_goal_celebrate_2_formation )
+    {
+        std::cerr << "Failed to read celebrate_ 2 formation" << std::endl;
+        return false;
+    }
+    
+    M_after_goal_celebrate_3_formation = readFormation( configpath + AfterGoal_Celebrate_3_CONF );
+    if ( ! M_after_goal_celebrate_3_formation )
+    {
+        std::cerr << "Failed to read celebrate_ 3 formation" << std::endl;
+        return false;
+    }
 
     s_initialized = true;
     return true;
@@ -632,22 +655,16 @@ void
 Strategy::updatePosition( const WorldModel & wm )                       //更新位置，包括球和球员
 {
     static GameTime s_update_time( 0, 0 );
+    static int celebrate_process = 0;
+    
     if ( s_update_time == wm.time() )                                   //意思是比赛还未开始
     {
         return;
     }
     s_update_time = wm.time();                                          //将s_update_time调整为与当前world_model一致
-
-    Formation::Ptr f = getFormation( wm );                              //读取当前应该使用的阵型
-    if ( ! f )
-    {
-        std::cerr << wm.teamName() << ':' << wm.self().unum() << ": "
-                  << wm.time()
-                  << " ***ERROR*** could not get the current formation" << std::endl;
-        return;
-    }
-
-    int ball_step = 0;
+	Formation::Ptr f = NULL;
+	
+	int ball_step = 0;
     if ( wm.gameMode().type() == GameMode::PlayOn
          || wm.gameMode().type() == GameMode::GoalKick_ )
     {
@@ -662,6 +679,66 @@ Strategy::updatePosition( const WorldModel & wm )                       //更新
                   __FILE__": HOME POSITION: ball pos=(%.1f %.1f) step=%d",
                   ball_pos.x, ball_pos.y,
                   ball_step );
+
+	
+	if( wm.gameMode().type() == GameMode::AfterGoal_
+		&& wm.gameMode().side() == wm.ourSide()
+		&& celebrate_process < 45 )
+	{
+		if( celebrate_process < 15 )
+		{
+			f = M_after_goal_celebrate_1_formation;
+			celebrate_process++;
+		}
+		else if( celebrate_process < 30 )
+		{
+			f = M_after_goal_celebrate_2_formation;
+			celebrate_process++;
+		}
+		else
+		{
+			f = M_after_goal_celebrate_3_formation;
+			celebrate_process++;
+		}
+		M_positions.clear();                                         //将原有的球员跑位位置数组清空
+		f->getPositions( ball_pos, M_positions );                   //重新根据球的位置确定球员所在位置
+		M_position_types.clear();                                      //更新position_type
+		for ( int unum = 1; unum <= 11; ++unum )
+		{
+			PositionType type = Position_Center;
+			if ( f->isSideType( unum ) )
+			{
+				type = Position_Left;
+			}
+			else if ( f->isSymmetryType( unum ) )
+			{
+				type = Position_Right;
+			}
+
+			M_position_types.push_back( type );
+
+			dlog.addText( Logger::TEAM,
+						"__ %d home pos (%.2f %.2f) type=%d",
+						unum,
+						M_positions[unum-1].x, M_positions[unum-1].y,
+						type );
+			dlog.addCircle( Logger::TEAM,
+							M_positions[unum-1], 0.5,
+							"#000000" );
+		}
+		return;
+	}
+    else
+		f = getFormation( wm );                              //读取当前应该使用的阵型
+	if( wm.gameMode().type() != GameMode::AfterGoal_ )
+		celebrate_process = 0;
+    if ( ! f )
+    {
+        std::cerr << wm.teamName() << ':' << wm.self().unum() << ": "
+                  << wm.time()
+                  << " ***ERROR*** could not get the current formation" << std::endl;
+        return;
+    }
 
     M_positions.clear();                                         //将原有的球员跑位位置数组清空
     f->getPositions( ball_pos, M_positions );                   //重新根据球的位置确定球员所在位置
@@ -927,13 +1004,13 @@ Strategy::getFormation( const WorldModel & wm ) const
     //
     // goal kick
     //
-    if ( wm.gameMode().type() == GameMode::GoalKick_ )    //如果完成得分
+    if ( wm.gameMode().type() == GameMode::GoalKick_ )    //球门球
     {
-        if ( wm.gameMode().side() == wm.ourSide() )      //己方得分
+        if ( wm.gameMode().side() == wm.ourSide() )      //己方
         {
             return M_goal_kick_our_formation;
         }
-        else                                                 //对方得分
+        else                                                 //对方
         {
             return M_goal_kick_opp_formation;
         }

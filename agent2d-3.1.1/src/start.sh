@@ -23,7 +23,7 @@ DIR=`dirname $0`
 
 player="${DIR}/sample_player"
 coach="${DIR}/sample_coach"
-teamname="HELIOS_base"
+teamname="HITSZer"
 host="localhost"
 port=6000
 coach_port=""
@@ -34,7 +34,7 @@ player_conf="${DIR}/player.conf"
 config_dir="${DIR}/formations-dt"
 
 coach_conf="${DIR}/coach.conf"
-team_graphic="--use_team_graphic off"
+team_graphic="--use_team_graphic on --team_graphic_file=${DIR}/team_logo.xpm"
 
 number=11
 usecoach="true"

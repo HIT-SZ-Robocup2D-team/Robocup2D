@@ -271,7 +271,7 @@ SampleCommunication::execute( PlayerAgent * agent )
 #if 1
     sayBallAndPlayers( agent );
     sayStamina( agent );
-    sayMarkSystem( agent );
+    //sayMarkSystem( agent );
 #else
     sayBall( agent );
     sayGoalie( agent );
